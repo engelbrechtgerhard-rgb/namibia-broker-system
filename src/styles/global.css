@@ -1,0 +1,25 @@
+:root {
+  --color-primary: #004e92;
+  --color-primary-dark: #000428;
+  --color-text-light: #ffffff;
+  --color-text-dark: #000000;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  --font-h1: 32px;
+  --font-h2: 26px;
+  --font-h3: 20px;
+  --font-body: 16px;
+
+  --line-tight: 1.1;
+  --line-normal: 1.4;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background-color: #f5f7fa;
+}
