@@ -1,5 +1,6 @@
 // amplify/api/resource.ts
-import { a } from '@aws-amplify/backend';
+import * as DataSchema from '@aws-amplify/data-schema';
+const a: any = DataSchema;
 
 export const api = a.api({
   name: 'namibia-broker-api',
