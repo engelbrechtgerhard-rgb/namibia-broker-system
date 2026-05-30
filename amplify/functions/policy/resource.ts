@@ -1,3 +1,4 @@
+// cache-bust
 import { defineFunction } from '@aws-amplify/backend';
 
 export const policyFunction = defineFunction({
