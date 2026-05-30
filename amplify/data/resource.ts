@@ -1,5 +1,10 @@
 import { defineData, a } from '@aws-amplify/backend';
 
+import type {
+  SecondaryIndexBuilder,
+  AuthorizationBuilder,
+} from 'amplify-data-builders';
+
 const schema = a.schema({
 
   Client: a
@@ -19,11 +24,11 @@ const schema = a.schema({
       createdAt:        a.datetime(),
       updatedAt:        a.datetime(),
     })
-    .secondaryIndexes((idx) => [
+    .secondaryIndexes((idx: Parameters<SecondaryIndexBuilder>[0]) => [
       idx('tenantId').name('tenantId-index').queryField('listClientsByTenant'),
       idx('assignedBrokerId').name('assignedBrokerId-index').queryField('listClientsByBroker'),
     ])
-    .authorization((allow) => [
+    .authorization((allow: Parameters<AuthorizationBuilder>[0]) => [
       allow.groups(['Broker']).to(['create', 'read', 'update']),
       allow.groups(['Admin']).to(['read', 'update', 'delete']),
     ]),
@@ -46,12 +51,12 @@ const schema = a.schema({
       createdAt:        a.datetime(),
       updatedAt:        a.datetime(),
     })
-    .secondaryIndexes((idx) => [
+    .secondaryIndexes((idx: Parameters<SecondaryIndexBuilder>[0]) => [
       idx('tenantId').name('tenantId-index').queryField('listPoliciesByTenant'),
       idx('clientId').name('clientId-index').queryField('listPoliciesByClient'),
       idx('assignedBrokerId').name('assignedBrokerId-index').queryField('listPoliciesByBroker'),
     ])
-    .authorization((allow) => [
+    .authorization((allow: Parameters<AuthorizationBuilder>[0]) => [
       allow.groups(['Broker']).to(['create', 'read', 'update']),
       allow.groups(['Admin']).to(['read', 'update', 'delete']),
     ]),
@@ -68,10 +73,10 @@ const schema = a.schema({
       createdAt:        a.datetime(),
       updatedAt:        a.datetime(),
     })
-    .secondaryIndexes((idx) => [
+    .secondaryIndexes((idx: Parameters<SecondaryIndexBuilder>[0]) => [
       idx('policyId').name('policyId-index').queryField('listVersionsByPolicy'),
     ])
-    .authorization((allow) => [
+    .authorization((allow: Parameters<AuthorizationBuilder>[0]) => [
       allow.groups(['Admin', 'Broker']).to(['create', 'read']),
     ]),
 
@@ -90,12 +95,12 @@ const schema = a.schema({
       createdAt:        a.datetime(),
       updatedAt:        a.datetime(),
     })
-    .secondaryIndexes((idx) => [
+    .secondaryIndexes((idx: Parameters<SecondaryIndexBuilder>[0]) => [
       idx('tenantId').name('tenantId-index').queryField('listClaimsByTenant'),
       idx('policyId').name('policyId-index').queryField('listClaimsByPolicy'),
       idx('assignedBrokerId').name('assignedBrokerId-index').queryField('listClaimsByBroker'),
     ])
-    .authorization((allow) => [
+    .authorization((allow: Parameters<AuthorizationBuilder>[0]) => [
       allow.groups(['Broker']).to(['create', 'read', 'update']),
       allow.groups(['Admin']).to(['read', 'update']),
     ]),
@@ -110,10 +115,10 @@ const schema = a.schema({
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
     })
-    .secondaryIndexes((idx) => [
+    .secondaryIndexes((idx: Parameters<SecondaryIndexBuilder>[0]) => [
       idx('claimId').name('claimId-index').queryField('listEventsByClaim'),
     ])
-    .authorization((allow) => [
+    .authorization((allow: Parameters<AuthorizationBuilder>[0]) => [
       allow.groups(['Broker']).to(['create', 'read']),
       allow.groups(['Admin']).to(['create', 'read', 'update', 'delete']),
     ]),
@@ -132,11 +137,11 @@ const schema = a.schema({
       createdAt:  a.datetime(),
       updatedAt: a.datetime(),
     })
-    .secondaryIndexes((idx) => [
+    .secondaryIndexes((idx: Parameters<SecondaryIndexBuilder>[0]) => [
       idx('tenantId').name('tenantId-index').queryField('listBillingByTenant'),
       idx('policyId').name('policyId-index').queryField('listBillingByPolicy'),
     ])
-    .authorization((allow) => [
+    .authorization((allow: Parameters<AuthorizationBuilder>[0]) => [
       allow.groups(['Broker']).to(['read']),
       allow.groups(['Admin']).to(['create', 'read', 'update', 'delete']),
     ]),
@@ -153,10 +158,10 @@ const schema = a.schema({
       user:       a.string().required(),
       timestamp:  a.datetime().required(),
     })
-    .secondaryIndexes((idx) => [
+    .secondaryIndexes((idx: Parameters<SecondaryIndexBuilder>[0]) => [
       idx('tenantId').name('tenantId-index').queryField('listAuditLogsByTenant'),
     ])
-    .authorization((allow) => [
+    .authorization((allow: Parameters<AuthorizationBuilder>[0]) => [
       allow.groups(['Broker']).to(['create']),
       allow.groups(['Admin']).to(['create', 'read']),
     ]),
