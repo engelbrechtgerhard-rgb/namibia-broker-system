@@ -1,16 +1,16 @@
 // src/config/authEnv.js
 
-export const region = "eu-west-1";
-export const userPoolId = "eu-west-1_nGhTrh9ir";
+export const region = import.meta.env.VITE_REGION;
+export const userPoolId = import.meta.env.VITE_USER_POOL_ID;
 
-export const clientId = "64bl7aj9p9p05e2j86o9jf5noe";
+export const clientId = import.meta.env.VITE_CLIENT_ID;
 
-export const appBaseUrl = "https://main.d1pi8uydtol6g1.amplifyapp.com";
+export const appBaseUrl = import.meta.env.VITE_APP_BASE_URL;
 
-export const redirectUri = `${appBaseUrl}/`;
-export const postLogoutRedirectUri = `${appBaseUrl}/clear`;
+export const redirectUri = import.meta.env.VITE_REDIRECT_URI;
+export const postLogoutRedirectUri = import.meta.env.VITE_POST_LOGOUT_REDIRECT_URI;
 
-export const cognitoDomain = "https://namibia-broker-system.auth.eu-west-1.amazoncognito.com";
+export const cognitoDomain = import.meta.env.VITE_COGNITO_DOMAIN;
 
 export const authority = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;
 
