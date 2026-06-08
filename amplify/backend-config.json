@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "resources": {
+    "auth": {
+      "build": true,
+      "path": "auth"
+    },
+    "data": {
+      "build": true,
+      "path": "data"
+    }
+  }
+}
