@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { listClients } from "../../api/clients";
+import { listClients } from "@/api/clients";
+import { useAuth } from "react-oidc-context";
 
 export default function Clients() {
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  // Load clients from Amplify Data API
   useEffect(() => {
+    if (!auth.user) return; // Wait for login to complete
+
     listClients()
       .then(setClients)
       .finally(() => setLoading(false));
-  }, []);
+  }, [auth.user]);
 
-  // Search filter based on the "name" field in your schema
-  const filtered = clients.filter((c) =>
-    c.name?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = clients.filter((c) => {
+    const fullName = `${c.firstName ?? ""} ${c.lastName ?? ""}`.toLowerCase();
+    return fullName.includes(search.toLowerCase());
+  });
 
   return (
     <div>
@@ -59,7 +62,6 @@ export default function Clients() {
           <thead>
             <tr style={{ background: "#f0f0f0" }}>
               <th style={th}>Name</th>
-              <th style={th}>Type</th>
               <th style={th}>Email</th>
               <th style={th}>Phone</th>
               <th style={th}>Actions</th>
@@ -69,8 +71,7 @@ export default function Clients() {
           <tbody>
             {filtered.map((c) => (
               <tr key={c.id}>
-                <td style={td}>{c.name}</td>
-                <td style={td}>{c.type}</td>
+                <td style={td}>{c.firstName} {c.lastName}</td>
                 <td style={td}>{c.email}</td>
                 <td style={td}>{c.phone}</td>
                 <td style={td}>

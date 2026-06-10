@@ -1,50 +1,52 @@
-import { generateClient } from 'aws-amplify/data';
+// Temporary in‑memory mock API until backend is rebuilt
 
-const client = generateClient();
-
-export async function listClients() {
-  const { data, errors } = await client.models.Client.list();
-
-  if (errors) {
-    console.error("ListClients errors:", errors);
-    throw new Error("Failed to load clients");
-  }
-
-  return data;
+export interface Client {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
 }
 
-export async function getClient(id: string) {
-  const { data, errors } = await client.models.Client.get({ id });
+let mockClients: Client[] = [
+  {
+    id: "1",
+    firstName: "John",
+    lastName: "Doe",
+    email: "john@example.com",
+    phone: "0812345678",
+  },
+  {
+    id: "2",
+    firstName: "Sarah",
+    lastName: "Smith",
+    email: "sarah@example.com",
+    phone: "0823456789",
+  },
+];
 
-  if (errors) {
-    console.error("GetClient errors:", errors);
-    throw new Error("Failed to load client");
-  }
-
-  return data;
+export async function listClients(): Promise<Client[]> {
+  return mockClients;
 }
 
-export async function createClient(input: any) {
-  const { data, errors } = await client.models.Client.create(input);
-
-  if (errors) {
-    console.error("CreateClient errors:", errors);
-    throw new Error("Failed to create client");
-  }
-
-  return data;
+export async function getClient(id: string): Promise<Client | undefined> {
+  return mockClients.find((c) => c.id === id);
 }
 
-export async function updateClient(id: string, input: any) {
-  const { data, errors } = await client.models.Client.update({
-    id,
+export async function createClient(input: Omit<Client, "id">): Promise<Client> {
+  const newClient: Client = {
+    id: crypto.randomUUID(),
     ...input,
-  });
+  };
 
-  if (errors) {
-    console.error("UpdateClient errors:", errors);
-    throw new Error("Failed to update client");
-  }
+  mockClients.push(newClient);
+  return newClient;
+}
 
-  return data;
+export async function updateClient(id: string, input: Partial<Client>): Promise<Client> {
+  const index = mockClients.findIndex((c) => c.id === id);
+  if (index === -1) throw new Error("Client not found");
+
+  mockClients[index] = { ...mockClients[index], ...input };
+  return mockClients[index];
 }
