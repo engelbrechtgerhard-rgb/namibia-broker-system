@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
 
 import {
   authority,
@@ -25,7 +26,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       automaticSilentRenew={true}
       loadUserInfo={true}
     >
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>
 );
