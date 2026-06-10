@@ -10,7 +10,11 @@ import styles from "./NavBar.module.css";
 export default function NavBar() {
   const auth = useAuth();
 
-  const signOutRedirect = async () => {
+  const login = () => {
+    auth.signinRedirect();
+  };
+
+  const logout = async () => {
     localStorage.setItem("logging_out", "true");
     await auth.removeUser();
 
@@ -29,11 +33,20 @@ export default function NavBar() {
       </div>
 
       <div className={styles.right}>
-        <span className={styles.email}>{auth.user?.profile.email}</span>
+        {auth.isAuthenticated && (
+          <>
+            <span className={styles.email}>{auth.user?.profile.email}</span>
+            <Button variant="secondary" onClick={logout}>
+              Logout
+            </Button>
+          </>
+        )}
 
-        <Button variant="secondary" onClick={signOutRedirect}>
-          Logout
-        </Button>
+        {!auth.isAuthenticated && (
+          <Button variant="secondary" onClick={login}>
+            Login
+          </Button>
+        )}
       </div>
     </nav>
   );
