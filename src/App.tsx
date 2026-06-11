@@ -13,84 +13,94 @@ import OidcCallback from "./pages/auth/OidcCallback";
 
 export default function App() {
   return (
-    <AppLayout>
-      <Routes>
-        <Route path="/callback" element={<OidcCallback />} />
+    <Routes>
+      {/* MUST NOT be wrapped in AppLayout */}
+      <Route path="/callback" element={<OidcCallback />} />
 
-        <Route path="/clear" element={<LogoutCleanup />} />
+      {/* Logout cleanup also must not be wrapped */}
+      <Route path="/clear" element={<LogoutCleanup />} />
 
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+      {/* Everything else goes inside the layout */}
+      <Route
+        path="/*"
+        element={
+          <AppLayout>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
 
-        <Route
-          path="/clients"
-          element={
-            <ProtectedRoute>
-              <Clients />
-            </ProtectedRoute>
-          }
-        />
+              <Route
+                path="/clients"
+                element={
+                  <ProtectedRoute>
+                    <Clients />
+                  </ProtectedRoute>
+                }
+              />
 
-        <Route
-          path="/clients/:clientId"
-          element={
-            <ProtectedRoute>
-              <ClientProfile />
-            </ProtectedRoute>
-          }
-        />
+              <Route
+                path="/clients/:clientId"
+                element={
+                  <ProtectedRoute>
+                    <ClientProfile />
+                  </ProtectedRoute>
+                }
+              />
 
-        <Route
-          path="/clients/add"
-          element={
-            <ProtectedRoute>
-              <AddClient />
-            </ProtectedRoute>
-          }
-        />
+              <Route
+                path="/clients/add"
+                element={
+                  <ProtectedRoute>
+                    <AddClient />
+                  </ProtectedRoute>
+                }
+              />
 
-        <Route
-          path="/policies"
-          element={
-            <ProtectedRoute>
-              <Policies />
-            </ProtectedRoute>
-          }
-        />
+              <Route
+                path="/policies"
+                element={
+                  <ProtectedRoute>
+                    <Policies />
+                  </ProtectedRoute>
+                }
+              />
 
-        <Route
-          path="/claims"
-          element={
-            <ProtectedRoute>
-              <Claims />
-            </ProtectedRoute>
-          }
-        />
+              <Route
+                path="/claims"
+                element={
+                  <ProtectedRoute>
+                    <Claims />
+                  </ProtectedRoute>
+                }
+              />
 
-        <Route
-          path="/reports"
-          element={
-            <ProtectedRoute>
-              <Reports />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </AppLayout>
+              <Route
+                path="/reports"
+                element={
+                  <ProtectedRoute>
+                    <Reports />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </AppLayout>
+        }
+      />
+    </Routes>
   );
 }
