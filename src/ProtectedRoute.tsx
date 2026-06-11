@@ -1,25 +1,35 @@
 import { useAuth } from "react-oidc-context";
-import { Navigate } from "react-router-dom";
+import { useEffect, ReactNode } from "react";
 
-export default function ProtectedRoute({ children }) {
+interface Props {
+  children: ReactNode;
+}
+
+export default function ProtectedRoute({ children }: Props) {
   const auth = useAuth();
+  const isLoggingOut = localStorage.getItem("logging_out") === "true";
 
-  // 1. Still loading OIDC state → do nothing
+  useEffect(() => {
+    if (!auth.isLoading && !auth.isAuthenticated && !isLoggingOut) {
+      auth.signinRedirect();
+    }
+  }, [auth.isLoading, auth.isAuthenticated, isLoggingOut, auth]);
+
+  if (auth.activeNavigator === "signinRedirect") {
+    return <div>Completing login…</div>;
+  }
+
   if (auth.isLoading) {
-    return null;
+    return <div>Loading authentication…</div>;
   }
 
-  // 2. If we are on the callback URL, let OIDC finish processing
-  if (window.location.search.includes("code=")) {
-    return null;
+  if (isLoggingOut) {
+    return <div>Signing out…</div>;
   }
 
-  // 3. Not authenticated → redirect to login
   if (!auth.isAuthenticated) {
-    auth.signinRedirect();
-    return null;
+    return <div>Redirecting to login…</div>;
   }
 
-  // 4. Authenticated → render the page
-  return children;
+  return <>{children}</>;
 }

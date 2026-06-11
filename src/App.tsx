@@ -1,3 +1,4 @@
+// src/App.tsx
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "@/pages/Dashboard";
@@ -9,99 +10,85 @@ import AddClient from "@/pages/clients/AddClient";
 import Policies from "@/pages/policies/Policies";
 import Claims from "@/pages/claims/Claims";
 import Reports from "@/pages/reports/Reports";
-import OidcCallback from "./pages/auth/OidcCallback";
 
 export default function App() {
   return (
-    <Routes>
-      {/* MUST NOT be wrapped in AppLayout */}
-      <Route path="/callback" element={<OidcCallback />} />
-      <Route path="/callback/" element={<OidcCallback />} />
+    <AppLayout>
+      <Routes>
+        <Route path="/clear" element={<LogoutCleanup />} />
 
-      {/* Logout cleanup also must not be wrapped */}
-      <Route path="/clear" element={<LogoutCleanup />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Everything else goes inside the layout */}
-      <Route
-        path="/*"
-        element={
-          <AppLayout>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
+        <Route
+          path="/clients"
+          element={
+            <ProtectedRoute>
+              <Clients />
+            </ProtectedRoute>
+          }
+        />
 
-              <Route
-                path="/clients"
-                element={
-                  <ProtectedRoute>
-                    <Clients />
-                  </ProtectedRoute>
-                }
-              />
+        <Route
+          path="/clients/:clientId"
+          element={
+            <ProtectedRoute>
+              <ClientProfile />
+            </ProtectedRoute>
+          }
+        />
 
-              <Route
-                path="/clients/:clientId"
-                element={
-                  <ProtectedRoute>
-                    <ClientProfile />
-                  </ProtectedRoute>
-                }
-              />
+        <Route
+          path="/clients/add"
+          element={
+            <ProtectedRoute>
+              <AddClient />
+            </ProtectedRoute>
+          }
+        />
 
-              <Route
-                path="/clients/add"
-                element={
-                  <ProtectedRoute>
-                    <AddClient />
-                  </ProtectedRoute>
-                }
-              />
+        <Route
+          path="/policies"
+          element={
+            <ProtectedRoute>
+              <Policies />
+            </ProtectedRoute>
+          }
+        />
 
-              <Route
-                path="/policies"
-                element={
-                  <ProtectedRoute>
-                    <Policies />
-                  </ProtectedRoute>
-                }
-              />
+        <Route
+          path="/claims"
+          element={
+            <ProtectedRoute>
+              <Claims />
+            </ProtectedRoute>
+          }
+        />
 
-              <Route
-                path="/claims"
-                element={
-                  <ProtectedRoute>
-                    <Claims />
-                  </ProtectedRoute>
-                }
-              />
-
-              <Route
-                path="/reports"
-                element={
-                  <ProtectedRoute>
-                    <Reports />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </AppLayout>
-        }
-      />
-    </Routes>
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </AppLayout>
   );
 }
