@@ -7,7 +7,7 @@ export const cognitoDomain = "https://namibia-broker-system.auth.eu-west-1.amazo
 
 export const appBaseUrl = "https://main.d3ag1h0byiiz37.amplifyapp.com";
 
-export const redirectUri = `${appBaseUrl}/`;
+export const redirectUri = `${appBaseUrl}/callback`;
 export const postLogoutRedirectUri = `${appBaseUrl}/clear`;
 
 export const authority = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;

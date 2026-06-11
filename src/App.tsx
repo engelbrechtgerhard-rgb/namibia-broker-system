@@ -9,12 +9,14 @@ import AddClient from "@/pages/clients/AddClient";
 import Policies from "@/pages/policies/Policies";
 import Claims from "@/pages/claims/Claims";
 import Reports from "@/pages/reports/Reports";
-
+import OidcCallback from "./pages/auth/OidcCallback";
 
 export default function App() {
   return (
     <AppLayout>
       <Routes>
+        <Route path="/callback" element={<OidcCallback />} />
+
         <Route path="/clear" element={<LogoutCleanup />} />
 
         <Route
