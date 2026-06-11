@@ -16,6 +16,7 @@ export default function App() {
     <Routes>
       {/* MUST NOT be wrapped in AppLayout */}
       <Route path="/callback" element={<OidcCallback />} />
+      <Route path="/callback/" element={<OidcCallback />} />
 
       {/* Logout cleanup also must not be wrapped */}
       <Route path="/clear" element={<LogoutCleanup />} />
