@@ -1,8 +1,13 @@
+import type { ReactNode } from "react";
 import Sidebar from "@/components/Sidebar";
 import NavBar from "@/components/NavBar";
 import styles from "./AppLayout.module.css";
 
-export default function AppLayout({ children }) {
+type AppLayoutProps = {
+  children: ReactNode;
+};
+
+export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <div className={styles.layout}>
       <NavBar />

@@ -1,31 +1,93 @@
-import { useAuth } from "react-oidc-context";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import LogoutCleanup from "./LogoutCleanup";
+import LogoutCleanup from "@/LogoutCleanup";
+import AppLayout from "@/layout/AppLayout";
+import Dashboard from "@/pages/Dashboard";
+import Clients from "@/pages/clients/Clients";
+import ClientProfile from "@/pages/clients/ClientProfile";
+import AddClient from "@/pages/clients/AddClient";
+import Policies from "@/pages/policies/Policies";
+import Claims from "@/pages/claims/Claims";
+import Reports from "@/pages/reports/Reports";
 
 export default function App() {
-  const auth = useAuth();
-
-  if (auth.isLoading) return <div>Loading...</div>;
-  if (auth.error) return <div>Error: {auth.error.message}</div>;
-
   return (
-    <Routes>
-      {/* Logout callback route */}
-      <Route path="/clear" element={<LogoutCleanup />} />
+    <AppLayout>
+      <Routes>
+        <Route path="/clear" element={<LogoutCleanup />} />
 
-      {/* Protected home route */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <div>
-              <h2>Hello {auth.user?.profile?.email}</h2>
-              <button onClick={() => auth.signoutRedirect()}>Sign out</button>
-            </div>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/clients"
+          element={
+            <ProtectedRoute>
+              <Clients />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/clients/:clientId"
+          element={
+            <ProtectedRoute>
+              <ClientProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/clients/add"
+          element={
+            <ProtectedRoute>
+              <AddClient />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/policies"
+          element={
+            <ProtectedRoute>
+              <Policies />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/claims"
+          element={
+            <ProtectedRoute>
+              <Claims />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </AppLayout>
   );
 }

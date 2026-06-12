@@ -1,53 +1,30 @@
 import { useAuth } from "react-oidc-context";
-import {
-  clientId,
-  postLogoutRedirectUri,
-  cognitoDomain,
-} from "@/config/authEnv";
-import Button from "@/components/Button";
-import styles from "./NavBar.module.css";
+import { clientId, postLogoutRedirectUri, cognitoDomain } from "@/config/authEnv";
 
 export default function NavBar() {
   const auth = useAuth();
 
-  const login = () => {
-    auth.signinRedirect();
-  };
-
-  const logout = async () => {
+  const signOutRedirect = async () => {
+    // Mark that logout is in progress
     localStorage.setItem("logging_out", "true");
+
+    // Remove local user session
     await auth.removeUser();
 
+    // Build Cognito logout URL
     const url =
       `${cognitoDomain}/logout?client_id=${clientId}` +
-      `&logout_uri=${encodeURIComponent(postLogoutRedirectUri)}` +
-      `&post_logout_redirect_uri=${encodeURIComponent(postLogoutRedirectUri)}`;
+      `&logout_uri=${encodeURIComponent(postLogoutRedirectUri)}`;
 
+    // Redirect to Cognito logout
     window.location.replace(url);
   };
 
   return (
-    <nav className={styles.nav}>
-      <div className={styles.left}>
-        <span className={styles.logo}>Namibia Broker System</span>
-      </div>
-
-      <div className={styles.right}>
-        {auth.isAuthenticated && (
-          <>
-            <span className={styles.email}>{auth.user?.profile.email}</span>
-            <Button variant="secondary" onClick={logout}>
-              Logout
-            </Button>
-          </>
-        )}
-
-        {!auth.isAuthenticated && (
-          <Button variant="secondary" onClick={login}>
-            Login
-          </Button>
-        )}
-      </div>
+    <nav>
+      <span>Namibia Broker System</span>
+      <span>{auth.user?.profile.email}</span>
+      <button onClick={signOutRedirect}>Logout</button>
     </nav>
   );
 }

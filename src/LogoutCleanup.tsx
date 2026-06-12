@@ -5,9 +5,9 @@ export default function LogoutCleanup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Clear any local state if needed
-    navigate("/", { replace: true });
+    localStorage.removeItem("logging_out");
+    navigate("/dashboard", { replace: true });
   }, [navigate]);
 
-  return <div>Signing out...</div>;
+  return <div>Signing out…</div>;
 }
