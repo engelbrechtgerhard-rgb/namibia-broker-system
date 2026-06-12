@@ -8,7 +8,8 @@ import {
   authority,
   clientId,
   redirectUri,
-  postLogoutRedirectUri
+  postLogoutRedirectUri,
+  cognitoDomain
 } from "@/config/authEnv";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
