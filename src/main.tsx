@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "react-oidc-context";
+import App from "./App";
 
 import {
   authority,
@@ -37,7 +38,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         end_session_endpoint: `${cognitoDomain}/logout`,
       }}
     >
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>
 );
