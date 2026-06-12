@@ -14,9 +14,9 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   // 2. Callback in progress → don't redirect
-  if (window.location.search.includes("code=")) {
-    return <div>Completing login...</div>;
-  }
+//  if (window.location.search.includes("code=")) {
+//    return <div>Completing login...</div>;
+//  }
 
   // 3. Not authenticated → redirect to Cognito
   if (!auth.isAuthenticated) {
