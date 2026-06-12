@@ -1,110 +1,29 @@
-import { Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
-import Dashboard from "@/pages/Dashboard";
-import LogoutCleanup from "@/LogoutCleanup";
-import AppLayout from "@/layout/AppLayout";
-import Clients from "@/pages/clients/Clients";
-import ClientProfile from "@/pages/clients/ClientProfile";
-import AddClient from "@/pages/clients/AddClient";
-import Policies from "@/pages/policies/Policies";
-import Claims from "@/pages/claims/Claims";
-import Reports from "@/pages/reports/Reports";
+// src/App.tsx
+import { useAuth } from "react-oidc-context";
 
 export default function App() {
+  const auth = useAuth();
+
+  if (auth.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (auth.error) {
+    return <div>Encountering error... {auth.error.message}</div>;
+  }
+
+  if (auth.isAuthenticated) {
+    return (
+      <div>
+        <pre>Hello: {auth.user?.profile.email}</pre>
+        <button onClick={() => auth.removeUser()}>Sign out</button>
+      </div>
+    );
+  }
+
   return (
-    <Routes>
-      {/* Logout cleanup must be isolated */}
-      <Route path="/clear" element={<LogoutCleanup />} />
-
-      {/* Root route must NOT be nested */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Dashboard />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      {/* All other protected routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Dashboard />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/clients"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Clients />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/clients/:clientId"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <ClientProfile />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/clients/add"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <AddClient />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/policies"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Policies />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/claims"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Claims />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/reports"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Reports />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+    <div>
+      <button onClick={() => auth.signinRedirect()}>Sign in</button>
+    </div>
   );
 }

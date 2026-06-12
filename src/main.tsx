@@ -1,37 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { BrowserRouter } from "react-router-dom";
-
-import {
-  authority,
-  clientId,
-  redirectUri,
-  postLogoutRedirectUri,
-  metadata
-} from "@/config/authEnv";
-
 import { AuthProvider } from "react-oidc-context";
+
+const cognitoAuthConfig = {
+  authority: "https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_Db3ryUNLM",
+  client_id: "4d4bujg2atrj6mrqq310620bq9",
+  redirect_uri: "https://main.d3ag1h0byiiz37.amplifyapp.com",
+  response_type: "code",
+  scope: "email openid profile",
+};
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <AuthProvider
-      authority={authority}
-      client_id={clientId}
-      redirect_uri={redirectUri}
-      post_logout_redirect_uri={postLogoutRedirectUri}
-      response_type="code"
-      scope="openid profile email"
-      metadata={metadata}
-      automaticSilentRenew={true}
-      loadUserInfo={true}
-      onSigninCallback={() => {
-        window.history.replaceState({}, document.title, "/");
-      }}
-    >
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+    <AuthProvider {...cognitoAuthConfig}>
+      <App />
     </AuthProvider>
   </React.StrictMode>
 );
