@@ -35,7 +35,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         authorization_endpoint: `${cognitoDomain}/oauth2/authorize`,
         token_endpoint: `${cognitoDomain}/oauth2/token`,
         userinfo_endpoint: `${cognitoDomain}/oauth2/userInfo`,
-        end_session_endpoint: `${cognitoDomain}/logout`,
+        end_session_endpoint: `${cognitoDomain}/logout?client_id=${clientId}`,
       }}
     >
       <BrowserRouter>
