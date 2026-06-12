@@ -1,4 +1,5 @@
 import { useAuth } from "react-oidc-context";
+import { Routes, Route } from "react-router-dom";
 
 export default function App() {
   const auth = useAuth();
@@ -11,26 +12,24 @@ export default function App() {
     user: auth.user,
   });
 
-  if (auth.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (auth.error) {
-    return <div>Error: {auth.error.message}</div>;
-  }
-
-  if (auth.isAuthenticated) {
-    return (
-      <div>
-        <h2>Hello {auth.user?.profile?.email}</h2>
-        <button onClick={() => auth.removeUser()}>Sign out</button>
-      </div>
-    );
-  }
+  if (auth.isLoading) return <div>Loading...</div>;
+  if (auth.error) return <div>Error: {auth.error.message}</div>;
 
   return (
-    <div>
-      <button onClick={() => auth.signinRedirect()}>Sign in</button>
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          auth.isAuthenticated ? (
+            <div>
+              <h2>Hello {auth.user?.profile?.email}</h2>
+              <button onClick={() => auth.removeUser()}>Sign out</button>
+            </div>
+          ) : (
+            <button onClick={() => auth.signinRedirect()}>Sign in</button>
+          )
+        }
+      />
+    </Routes>
   );
 }
