@@ -30,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       scope="openid profile email"
       automaticSilentRenew={false}
       loadUserInfo={false}
+      metadataUrl={undefined}
       metadata={{
         issuer: authority,
         authorization_endpoint: `${cognitoDomain}/oauth2/authorize`,
