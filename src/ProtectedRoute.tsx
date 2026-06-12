@@ -10,7 +10,12 @@ export default function ProtectedRoute({ children }: Props) {
   const isLoggingOut = localStorage.getItem("logging_out") === "true";
 
   useEffect(() => {
-    if (!auth.isLoading && !auth.isAuthenticated && !isLoggingOut) {
+    if ( !auth.isLoading &&
+         !auth.isAuthenticated &&
+         !isLoggingOut &&
+         auth.activeNavigator === undefined &&   // NEW: do not redirect during callback
+         !window.location.search.includes("code=") // NEW: allow callback to complete
+    ) {
       auth.signinRedirect();
     }
   }, [auth.isLoading, auth.isAuthenticated, isLoggingOut, auth]);
