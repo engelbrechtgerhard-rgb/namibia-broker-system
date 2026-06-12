@@ -22,7 +22,7 @@ export default function App() {
   if (auth.isAuthenticated) {
     return (
       <div>
-        <h2>Hello {auth.user?.profile.email}</h2>
+        <h2>Hello {auth.user?.profile?.email}</h2>
         <button onClick={() => auth.removeUser()}>Sign out</button>
       </div>
     );

@@ -1,4 +1,3 @@
-// src/config/authEnv.ts
 export const region = "eu-west-1";
 
 export const userPoolId = "eu-west-1_Db3ryUNLM";
@@ -13,10 +12,3 @@ export const redirectUri = appBaseUrl;
 export const postLogoutRedirectUri = `${appBaseUrl}/clear`;
 
 export const authority = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;
-
-console.log("AUTH ENV LOADED:", {
-  redirectUri,
-  authority,
-  clientId,
-  postLogoutRedirectUri
-});
