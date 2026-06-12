@@ -22,6 +22,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       scope="openid profile email"
       automaticSilentRenew={true}
       loadUserInfo={true}
+      metadata={{
+        issuer: `https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_Db3ryUNLM`,
+        authorization_endpoint: `${cognitoDomain}/oauth2/authorize`,
+        token_endpoint: `${cognitoDomain}/oauth2/token`,
+        userinfo_endpoint: `${cognitoDomain}/oauth2/userInfo`,
+        end_session_endpoint: `${cognitoDomain}/logout`,
+      }}
+  
       onSigninCallback={() => {
         window.history.replaceState({}, document.title, "/");
       }}
