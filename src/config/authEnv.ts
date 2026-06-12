@@ -9,14 +9,7 @@ export const cognitoDomain =
 
 export const appBaseUrl = "https://main.d3ag1h0byiiz37.amplifyapp.com";
 
-// back to root, no /callback, no trailing slash
 export const redirectUri = appBaseUrl;
 export const postLogoutRedirectUri = `${appBaseUrl}/clear`;
 
 export const authority = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;
-
-export const metadata = {
-  authorization_endpoint: `${cognitoDomain}/oauth2/authorize`,
-  token_endpoint: `${cognitoDomain}/oauth2/token`,
-  end_session_endpoint: `${cognitoDomain}/logout`,
-};

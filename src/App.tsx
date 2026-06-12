@@ -1,4 +1,3 @@
-// src/App.tsx
 import { useAuth } from "react-oidc-context";
 
 export default function App() {
@@ -9,13 +8,13 @@ export default function App() {
   }
 
   if (auth.error) {
-    return <div>Encountering error... {auth.error.message}</div>;
+    return <div>Error: {auth.error.message}</div>;
   }
 
   if (auth.isAuthenticated) {
     return (
       <div>
-        <pre>Hello: {auth.user?.profile.email}</pre>
+        <h2>Hello {auth.user?.profile.email}</h2>
         <button onClick={() => auth.removeUser()}>Sign out</button>
       </div>
     );
