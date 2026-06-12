@@ -1,40 +1,29 @@
+import { ReactNode } from "react";
 import { useAuth } from "react-oidc-context";
-import { useEffect, ReactNode } from "react";
 
-interface Props {
+interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-export default function ProtectedRoute({ children }: Props) {
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const auth = useAuth();
-  const isLoggingOut = localStorage.getItem("logging_out") === "true";
 
-  useEffect(() => {
-    if ( !auth.isLoading &&
-         !auth.isAuthenticated &&
-         !isLoggingOut &&
-         auth.activeNavigator === undefined &&   // NEW: do not redirect during callback
-         !window.location.search.includes("code=") // NEW: allow callback to complete
-    ) {
-      auth.signinRedirect();
-    }
-  }, [auth.isLoading, auth.isAuthenticated, isLoggingOut, auth]);
-
-  if (auth.activeNavigator === "signinRedirect") {
-    return <div>Completing login…</div>;
-  }
-
+  // 1. Still loading → don't redirect
   if (auth.isLoading) {
-    return <div>Loading authentication…</div>;
+    return <div>Loading...</div>;
   }
 
-  if (isLoggingOut) {
-    return <div>Signing out…</div>;
+  // 2. Callback in progress → don't redirect
+  if (window.location.search.includes("code=")) {
+    return <div>Completing login...</div>;
   }
 
+  // 3. Not authenticated → redirect to Cognito
   if (!auth.isAuthenticated) {
-    return <div>Redirecting to login…</div>;
+    auth.signinRedirect();
+    return null;
   }
 
+  // 4. Authenticated → render protected content
   return <>{children}</>;
 }
