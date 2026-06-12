@@ -3,6 +3,14 @@ import { useAuth } from "react-oidc-context";
 export default function App() {
   const auth = useAuth();
 
+  console.log("AUTH STATE:", {
+    isLoading: auth.isLoading,
+    isAuthenticated: auth.isAuthenticated,
+    error: auth.error,
+    activeNavigator: auth.activeNavigator,
+    user: auth.user,
+  });
+
   if (auth.isLoading) {
     return <div>Loading...</div>;
   }
