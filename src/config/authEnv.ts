@@ -13,3 +13,10 @@ export const redirectUri = appBaseUrl;
 export const postLogoutRedirectUri = `${appBaseUrl}/clear`;
 
 export const authority = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;
+
+console.log("AUTH ENV LOADED:", {
+  redirectUri,
+  authority,
+  clientId,
+  postLogoutRedirectUri
+});
