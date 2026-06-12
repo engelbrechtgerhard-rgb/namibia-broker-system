@@ -1,7 +1,7 @@
 // src/config/authEnv.ts
 export const region = "eu-west-1";
 
-export const userPoolId = "eu-west-1_nGhTrh9ir";
+export const userPoolId = "eu-west-1_Db3ryUNLM";
 export const clientId = "4d4bujg2atrj6mrqq310620bq9";
 
 export const cognitoDomain =
