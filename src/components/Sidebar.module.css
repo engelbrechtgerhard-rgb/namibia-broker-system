@@ -18,3 +18,11 @@
   color: #007bff;
   font-weight: 600;
 }
+
+.sidebar {
+  width: 220px;
+  background: #f7f7f7;
+  padding: 1rem;
+  border-right: 1px solid #ddd;
+  height: 100vh;
+}
