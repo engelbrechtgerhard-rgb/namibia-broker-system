@@ -8,27 +8,56 @@ export default function Sidebar() {
 
       <ul className={styles.menu}>
         <li>
-          <NavLink to="/dashboard" className={styles.link}>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? `${styles.link} ${styles.active}` : styles.link
+            }
+          >
             Dashboard
           </NavLink>
         </li>
+
         <li>
-          <NavLink to="/clients" className={styles.link}>
+          <NavLink
+            to="/clients"
+            className={({ isActive }) =>
+              isActive ? `${styles.link} ${styles.active}` : styles.link
+            }
+          >
             Clients
           </NavLink>
         </li>
+
         <li>
-          <NavLink to="/policies" className={styles.link}>
+          <NavLink
+            to="/policies"
+            className={({ isActive }) =>
+              isActive ? `${styles.link} ${styles.active}` : styles.link
+            }
+          >
             Policies
           </NavLink>
         </li>
+
         <li>
-          <NavLink to="/claims" className={styles.link}>
+          <NavLink
+            to="/claims"
+            className={({ isActive }) =>
+              isActive ? `${styles.link} ${styles.active}` : styles.link
+            }
+          >
             Claims
           </NavLink>
         </li>
+
         <li>
-          <NavLink to="/reports" className={styles.link}>
+          <NavLink
+            to="/reports"
+            className={({ isActive }) =>
+              isActive ? `${styles.link} ${styles.active}` : styles.link
+            }
+          >
             Reports
           </NavLink>
         </li>
