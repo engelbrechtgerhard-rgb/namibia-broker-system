@@ -1,35 +1,32 @@
-import { useAuth } from "react-oidc-context";
-import { clientId, postLogoutRedirectUri, cognitoDomain } from "@/config/authEnv";
-import Button from "@/components/Button";
-import styles from "./NavBar.module.css";
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+  color: var(--color-text-light);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
 
-export default function NavBar() {
-  const auth = useAuth();
+.left {
+  display: flex;
+  align-items: center;
+}
 
-  const signOutRedirect = async () => {
-    localStorage.setItem("logging_out", "true");
-    await auth.removeUser();
+.logo {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--color-text-light);
+}
 
-    const url =
-      `${cognitoDomain}/logout?client_id=${clientId}` +
-      `&logout_uri=${encodeURIComponent(postLogoutRedirectUri)}`;
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
 
-    window.location.replace(url);
-  };
-
-  return (
-    <nav className={styles.nav}>
-      <div className={styles.left}>
-        <span className={styles.logo}>Namibia Broker System</span>
-      </div>
-
-      <div className={styles.right}>
-        <span className={styles.email}>{auth.user?.profile.email}</span>
-
-        <Button variant="secondary" onClick={signOutRedirect}>
-          Logout
-        </Button>
-      </div>
-    </nav>
-  );
+.email {
+  opacity: 0.95;
+  font-weight: 500;
 }

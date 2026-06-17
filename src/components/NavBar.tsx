@@ -1,5 +1,6 @@
 import { useAuth } from "react-oidc-context";
 import { clientId, postLogoutRedirectUri, cognitoDomain } from "@/config/authEnv";
+import Button from "@/components/Button";
 import styles from "./NavBar.module.css";
 
 export default function NavBar() {
@@ -24,9 +25,10 @@ export default function NavBar() {
 
       <div className={styles.right}>
         <span className={styles.email}>{auth.user?.profile.email}</span>
-        <button className={styles.logoutButton} onClick={signOutRedirect}>
+
+        <Button variant="secondary" onClick={signOutRedirect}>
           Logout
-        </button>
+        </Button>
       </div>
     </nav>
   );
