@@ -1,52 +1,83 @@
-// Temporary in‑memory mock API until backend is rebuilt
+import { generateClient } from "aws-amplify/data";
 
-export interface Client {
+// Amplify Data API client
+const client = generateClient();
+
+// Types come directly from your schema
+export type Client = {
   id: string;
   firstName: string;
   lastName: string;
   email?: string;
   phone?: string;
-}
+  idNumber?: string;
+  taxNumber?: string;
+  vatNumber?: string;
+  address?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
 
-let mockClients: Client[] = [
-  {
-    id: "1",
-    firstName: "John",
-    lastName: "Doe",
-    email: "john@example.com",
-    phone: "0812345678",
-  },
-  {
-    id: "2",
-    firstName: "Sarah",
-    lastName: "Smith",
-    email: "sarah@example.com",
-    phone: "0823456789",
-  },
-];
-
+// -----------------------------------------------------
+// List all clients (automatically filtered by tenantId)
+// -----------------------------------------------------
 export async function listClients(): Promise<Client[]> {
-  return mockClients;
+  const { data, errors } = await client.models.Client.list();
+
+  if (errors) {
+    console.error("ListClients errors:", errors);
+    throw new Error("Failed to load clients");
+  }
+
+  return data;
 }
 
-export async function getClient(id: string): Promise<Client | undefined> {
-  return mockClients.find((c) => c.id === id);
+// -----------------------------------------------------
+// Get a single client by ID
+// -----------------------------------------------------
+export async function getClient(id: string): Promise<Client | null> {
+  const { data, errors } = await client.models.Client.get({ id });
+
+  if (errors) {
+    console.error("GetClient errors:", errors);
+    throw new Error("Failed to load client");
+  }
+
+  return data;
 }
 
+// -----------------------------------------------------
+// Create a new client
+// Amplify automatically injects:
+// - id (UUID)
+// - tenantId
+// - createdAt
+// - updatedAt
+// -----------------------------------------------------
 export async function createClient(input: Omit<Client, "id">): Promise<Client> {
-  const newClient: Client = {
-    id: crypto.randomUUID(),
-    ...input,
-  };
+  const { data, errors } = await client.models.Client.create(input);
 
-  mockClients.push(newClient);
-  return newClient;
+  if (errors) {
+    console.error("CreateClient errors:", errors);
+    throw new Error("Failed to create client");
+  }
+
+  return data;
 }
 
+// -----------------------------------------------------
+// Update an existing client
+// -----------------------------------------------------
 export async function updateClient(id: string, input: Partial<Client>): Promise<Client> {
-  const index = mockClients.findIndex((c) => c.id === id);
-  if (index === -1) throw new Error("Client not found");
+  const { data, errors } = await client.models.Client.update({
+    id,
+    ...input,
+  });
 
-  mockClients[index] = { ...mockClients[index], ...input };
-  return mockClients[index];
+  if (errors) {
+    console.error("UpdateClient errors:", errors);
+    throw new Error("Failed to update client");
+  }
+
+  return data;
 }

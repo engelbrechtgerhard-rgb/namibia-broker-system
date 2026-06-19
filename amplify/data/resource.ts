@@ -1,12 +1,67 @@
-import { a, defineData, type ClientSchema } from '@aws-amplify/backend';
+import { a, defineData, type ClientSchema } from "@aws-amplify/backend";
 
 const schema = a.schema({
+  Client: a
+    .model({
+      id: a.id().required(),
+      tenantId: a.string().required(),
+      firstName: a.string().required(),
+      lastName: a.string().required(),
+      email: a.string(),
+      phone: a.string(),
+      idNumber: a.string(),
+      taxNumber: a.string(),
+      vatNumber: a.string(),
+      address: a.string(),
+      createdAt: a.datetime(),
+      updatedAt: a.datetime(),
+    })
+    .identifier(["id"])
+    .authorization((allow) => [allow.ownerDefinedIn("tenantId")]),
+
+  Policy: a
+    .model({
+      id: a.id().required(),
+      tenantId: a.string().required(),
+      clientId: a.string().required(),
+      assignedBrokerId: a.string().required(),
+      insurer: a.string().required(),
+      policyNumber: a.string(),
+      type: a.string().required(),
+      premium: a.string().required(),
+      commission: a.string().required(),
+      status: a.string().required(),
+      renewalDate: a.datetime().required(),
+      inceptionDate: a.datetime().required(),
+      createdAt: a.datetime(),
+      updatedAt: a.datetime(),
+    })
+    .identifier(["id"])
+    .authorization((allow) => [allow.ownerDefinedIn("tenantId")]),
+
+  Claim: a
+    .model({
+      id: a.id().required(),
+      tenantId: a.string().required(),
+      clientId: a.string().required(),
+      policyId: a.string().required(),
+      assignedBrokerId: a.string().required(),
+      status: a.string().required(),
+      description: a.string(),
+      incidentDate: a.datetime(),
+      workflowState: a.string(),
+      createdAt: a.datetime(),
+      updatedAt: a.datetime(),
+    })
+    .identifier(["id"])
+    .authorization((allow) => [allow.ownerDefinedIn("tenantId")]),
+
   Tenant: a
     .model({
       id: a.id().required(),
       name: a.string().required(),
     })
-    .identifier(['id'])
+    .identifier(["id"])
     .authorization((allow) => [allow.authenticated()]),
 });
 
