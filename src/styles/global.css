@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
 :root {
   --color-primary: #004e92;
   --color-primary-dark: #000428;
@@ -9,6 +11,7 @@
   --space-md: 16px;
   --space-lg: 24px;
 
+  --font-family-base: 'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif;
   --font-h1: 32px;
   --font-h2: 26px;
   --font-h3: 20px;
@@ -20,6 +23,12 @@
 
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-family-base);
   background-color: #f5f7fa;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
