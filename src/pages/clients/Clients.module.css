@@ -1,0 +1,50 @@
+/* Search row */
+.searchRow {
+  margin-bottom: var(--space-md);
+}
+
+.searchInput {
+  padding: 10px 12px;
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: var(--font-body);
+}
+
+/* Table */
+.table {
+  width: 100%;
+  background: #fff;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.table thead {
+  background: #f0f0f0;
+}
+
+.table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: var(--font-body);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: var(--font-body);
+}
+
+/* View link */
+.viewLink {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.viewLink:hover {
+  opacity: 0.8;
+}
