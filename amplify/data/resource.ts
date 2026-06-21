@@ -5,6 +5,7 @@ const schema = a.schema({
     .model({
       id: a.id().required(),
       tenantId: a.string().required(),
+      type: a.string(),
       firstName: a.string().required(),
       lastName: a.string().required(),
       email: a.string(),
@@ -60,6 +61,8 @@ const schema = a.schema({
     .model({
       id: a.id().required(),
       name: a.string().required(),
+      createdAt: a.datetime(),
+      updatedAt: a.datetime(),
     })
     .identifier(["id"])
     .authorization((allow) => [allow.authenticated()]),
