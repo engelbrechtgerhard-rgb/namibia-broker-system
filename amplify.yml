@@ -7,6 +7,7 @@ backend:
         - rm -rf node_modules
         - nvm install 20
         - nvm use 20
+        - cd amplify
         - npm install --ignore-scripts @aws-amplify/backend-cli@latest
         - export npm_config_user_agent="npm"
         - node -v
