@@ -8,6 +8,7 @@ backend:
         - nvm install 20
         - nvm use 20
         - npm install --ignore-scripts @aws-amplify/backend-cli@latest
+        - export npm_config_user_agent="npm"
         - node -v
         - npm -v
         - ./node_modules/.bin/ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AMPLIFY_APP_ID
