@@ -13,7 +13,7 @@ backend:
           export npm_config_user_agent="npm"
           node -v
           npm -v
-          ./node_modules/.bin/ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AMPLIFY_APP_ID
+          ./node_modules/.bin/ampx pipeline-deploy --branch main --app-id d3ag1h0byiiz37
 
 frontend:
   phases:
