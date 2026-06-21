@@ -3,6 +3,7 @@ backend:
   phases:
     build:
       commands:
+        - rm -rf node_modules
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AMPLIFY_APP_ID
 frontend:
   phases:
@@ -17,5 +18,4 @@ frontend:
     files:
       - '**/*'
   cache:
-    paths:
-      - node_modules/**/*
+    paths: []
