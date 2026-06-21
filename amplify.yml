@@ -5,7 +5,7 @@ backend:
     build:
       commands:
         - |
-          cd amplify
+          cd $CODEBUILD_SRC_DIR/amplify
           rm -rf node_modules
           nvm install 20
           nvm use 20
