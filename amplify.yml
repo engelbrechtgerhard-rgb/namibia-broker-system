@@ -1,14 +1,22 @@
 version: 1
+
 backend:
   phases:
     build:
       commands:
         - rm -rf node_modules
+        - nvm install 20
+        - nvm use 20
+        - node -v
+        - npm -v
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AMPLIFY_APP_ID
+
 frontend:
   phases:
     preBuild:
       commands:
+        - nvm install 20
+        - nvm use 20
         - npm ci
     build:
       commands:
