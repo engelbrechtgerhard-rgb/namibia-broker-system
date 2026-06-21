@@ -44,6 +44,6 @@
     "typescript": "^5.3.0"
   },
   "optionalDependencies": {
-  "@parcel/watcher": "0.0.0"
+  "@parcel/watcher": "*"
   }
 }
