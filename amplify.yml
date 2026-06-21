@@ -4,18 +4,11 @@ backend:
   phases:
     build:
       commands:
-        - |
-          mkdir -p /tmp/backend-build
-          cp -R $CODEBUILD_SRC_DIR/amplify /tmp/backend-build/
-          cd /tmp/backend-build/amplify
-          rm -rf node_modules
-          nvm install 20
-          nvm use 20
-          npm install --ignore-scripts @aws-amplify/backend-cli@latest
-          export npm_config_user_agent="npm"
-          node -v
-          npm -v
-          ./node_modules/.bin/ampx pipeline-deploy --branch main --app-id d3ag1h0byiiz37
+        - nvm install 20
+        - nvm use 20
+        - cd amplify
+        - npm install
+        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 
 frontend:
   phases:
@@ -32,4 +25,5 @@ frontend:
     files:
       - '**/*'
   cache:
-    paths: []
+    paths:
+      - node_modules/**/*
