@@ -18,7 +18,7 @@ const schema = a.schema({
       updatedAt: a.datetime(),
     })
     .identifier(["id"])
-    .authorization((allow) => [allow.ownerDefinedIn("tenantId")]),
+    .authorization((allow) => [allow.ownerDefinedIn("tenantId").identityClaim("custom:tenantId")]),
 
   Policy: a
     .model({
@@ -38,7 +38,7 @@ const schema = a.schema({
       updatedAt: a.datetime(),
     })
     .identifier(["id"])
-    .authorization((allow) => [allow.ownerDefinedIn("tenantId")]),
+    .authorization((allow) => [allow.ownerDefinedIn("tenantId").identityClaim("custom:tenantId")]),
 
   Claim: a
     .model({
@@ -55,7 +55,7 @@ const schema = a.schema({
       updatedAt: a.datetime(),
     })
     .identifier(["id"])
-    .authorization((allow) => [allow.ownerDefinedIn("tenantId")]),
+    .authorization((allow) => [allow.ownerDefinedIn("tenantId").identityClaim("custom:tenantId")]),
 
   Tenant: a
     .model({
