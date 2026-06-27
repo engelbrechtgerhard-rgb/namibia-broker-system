@@ -6,10 +6,10 @@ backend:
       commands:
         - nvm install 20
         - nvm use 20
-        - rm -rf node_modules
-        - cd amplify && npm install
+        - rm -rf node_modules amplify/node_modules
+        - npm install --prefix amplify
         - export npm_config_user_agent="npm"
-        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID --outputs-out-dir ..
+        - ./amplify/node_modules/.bin/ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 
 frontend:
   phases:
