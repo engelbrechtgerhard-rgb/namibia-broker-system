@@ -8,6 +8,7 @@
     "@aws-amplify/backend-cli": "^1.0.0",
     "aws-cdk-lib": "^2.189.1",
     "constructs": "^10.4.2",
+    "esbuild": "0.28.1",
     "typescript": "^5.3.0"
   },
   "optionalDependencies": {
