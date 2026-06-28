@@ -38,7 +38,7 @@ export async function listClients(): Promise<Client[]> {
 // -----------------------------------------------------
 // Get a single client by ID
 // -----------------------------------------------------
-export async function getClient(id: string): Promise<Client | null> {
+export async function getClientById(id: string): Promise<Client | null> {
   const { data, errors } = await getClient().models.Client.get({ id });
 
   if (errors) {
