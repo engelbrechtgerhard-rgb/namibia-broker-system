@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import PageLayout from "@/layout/PageLayout";
-import { getClient } from "@/api/clients";
+import { getClientById } from "@/api/clients";
 
 export default function ClientProfile() {
   const { clientId } = useParams<{ clientId: string }>();
@@ -11,7 +11,7 @@ export default function ClientProfile() {
   useEffect(() => {
     if (!clientId) return;
 
-    getClient(clientId)
+    getClientById(clientId)
       .then(setClient)
       .finally(() => setLoading(false));
   }, [clientId]);
