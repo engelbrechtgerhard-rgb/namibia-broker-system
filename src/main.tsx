@@ -3,7 +3,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "react-oidc-context";
+import { Amplify } from "aws-amplify";
+import amplifyOutputs from "../amplify_outputs.json";
 import App from "./App";
+
+Amplify.configure(amplifyOutputs);
 
 import {
   authority,
