@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "react-oidc-context";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
 import { listClients } from "@/api/clients";
 import styles from "./Clients.module.css";
 
 export default function Clients() {
-  const { user } = useAuth();
   const navigate = useNavigate();
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!user?.access_token) return;
-    listClients(user.access_token)
+    listClients()
       .then(setClients)
       .finally(() => setLoading(false));
-  }, [user?.access_token]);
+  }, []);
 
   const filtered = clients.filter((c) => {
     const fullName = `${c.firstName ?? ""} ${c.lastName ?? ""}`.toLowerCase();

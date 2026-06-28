@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "react-oidc-context";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
 import { createClient } from "@/api/clients";
 
 export default function AddClient() {
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -23,8 +21,7 @@ export default function AddClient() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user?.access_token) return;
-    const newClient = await createClient(user.access_token, form);
+    const newClient = await createClient(form);
     navigate(`/clients/${newClient.id}`);
   }
 
