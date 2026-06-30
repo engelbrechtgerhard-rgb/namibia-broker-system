@@ -1,13 +1,33 @@
-import { generateClient } from "aws-amplify/data";
+import amplifyOutputs from "../../amplify_outputs.json";
 
-const getClient = (idToken: string) =>
-  generateClient({ authMode: "userPool", authToken: idToken });
+const APPSYNC_URL = amplifyOutputs.data.url;
+
+async function gql(idToken: string, query: string, variables?: Record<string, unknown>) {
+  const res = await fetch(APPSYNC_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: idToken,
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  const json = await res.json();
+
+  if (json.errors?.length) {
+    console.error("AppSync errors:", json.errors);
+    throw new Error(json.errors[0].message);
+  }
+
+  return json.data;
+}
 
 export type Client = {
   id: string;
   tenantId: string;
   firstName: string;
   lastName: string;
+  type?: string;
   email?: string;
   phone?: string;
   idNumber?: string;
@@ -18,26 +38,51 @@ export type Client = {
   updatedAt?: string;
 };
 
+const CLIENT_FIELDS = `
+  id tenantId type firstName lastName
+  email phone idNumber taxNumber vatNumber address
+  createdAt updatedAt
+`;
+
 export async function listClients(idToken: string): Promise<Client[]> {
-  const { data, errors } = await getClient(idToken).models.Client.list();
-  if (errors) throw new Error("Failed to load clients");
-  return data;
+  const data = await gql(idToken, `
+    query ListClients {
+      listClients { items { ${CLIENT_FIELDS} } }
+    }
+  `);
+  return data.listClients.items;
 }
 
 export async function getClientById(idToken: string, id: string): Promise<Client | null> {
-  const { data, errors } = await getClient(idToken).models.Client.get({ id });
-  if (errors) throw new Error("Failed to load client");
-  return data;
+  const data = await gql(idToken, `
+    query GetClient($id: ID!) {
+      getClient(id: $id) { ${CLIENT_FIELDS} }
+    }
+  `, { id });
+  return data.getClient;
 }
 
-export async function createClient(idToken: string, input: Omit<Client, "id" | "tenantId" | "createdAt" | "updatedAt">): Promise<Client> {
-  const { data, errors } = await getClient(idToken).models.Client.create(input);
-  if (errors) throw new Error("Failed to create client");
-  return data;
+export async function createClient(
+  idToken: string,
+  input: Omit<Client, "id" | "tenantId" | "createdAt" | "updatedAt">
+): Promise<Client> {
+  const data = await gql(idToken, `
+    mutation CreateClient($input: CreateClientInput!) {
+      createClient(input: $input) { ${CLIENT_FIELDS} }
+    }
+  `, { input });
+  return data.createClient;
 }
 
-export async function updateClient(idToken: string, id: string, input: Partial<Client>): Promise<Client> {
-  const { data, errors } = await getClient(idToken).models.Client.update({ id, ...input });
-  if (errors) throw new Error("Failed to update client");
-  return data;
+export async function updateClient(
+  idToken: string,
+  id: string,
+  input: Partial<Client>
+): Promise<Client> {
+  const data = await gql(idToken, `
+    mutation UpdateClient($input: UpdateClientInput!) {
+      updateClient(input: $input) { ${CLIENT_FIELDS} }
+    }
+  `, { input: { id, ...input } });
+  return data.updateClient;
 }
