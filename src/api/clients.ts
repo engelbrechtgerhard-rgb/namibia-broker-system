@@ -1,6 +1,7 @@
 import { generateClient } from "aws-amplify/data";
 
-const client = generateClient({ authMode: "userPool" });
+const getClient = (accessToken: string) =>
+  generateClient({ authMode: "userPool", authToken: accessToken });
 
 export type Client = {
   id: string;
@@ -17,26 +18,26 @@ export type Client = {
   updatedAt?: string;
 };
 
-export async function listClients(): Promise<Client[]> {
-  const { data, errors } = await client.models.Client.list();
+export async function listClients(accessToken: string): Promise<Client[]> {
+  const { data, errors } = await getClient(accessToken).models.Client.list();
   if (errors) throw new Error("Failed to load clients");
   return data;
 }
 
-export async function getClientById(id: string): Promise<Client | null> {
-  const { data, errors } = await client.models.Client.get({ id });
+export async function getClientById(accessToken: string, id: string): Promise<Client | null> {
+  const { data, errors } = await getClient(accessToken).models.Client.get({ id });
   if (errors) throw new Error("Failed to load client");
   return data;
 }
 
-export async function createClient(input: Omit<Client, "id" | "tenantId" | "createdAt" | "updatedAt">): Promise<Client> {
-  const { data, errors } = await client.models.Client.create(input);
+export async function createClient(accessToken: string, input: Omit<Client, "id" | "tenantId" | "createdAt" | "updatedAt">): Promise<Client> {
+  const { data, errors } = await getClient(accessToken).models.Client.create(input);
   if (errors) throw new Error("Failed to create client");
   return data;
 }
 
-export async function updateClient(id: string, input: Partial<Client>): Promise<Client> {
-  const { data, errors } = await client.models.Client.update({ id, ...input });
+export async function updateClient(accessToken: string, id: string, input: Partial<Client>): Promise<Client> {
+  const { data, errors } = await getClient(accessToken).models.Client.update({ id, ...input });
   if (errors) throw new Error("Failed to update client");
   return data;
 }

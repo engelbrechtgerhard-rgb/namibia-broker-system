@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useAuth } from "react-oidc-context";
 import PageLayout from "@/layout/PageLayout";
 import { getClientById } from "@/api/clients";
 
 export default function ClientProfile() {
+  const { user } = useAuth();
   const { clientId } = useParams<{ clientId: string }>();
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!clientId) return;
-    getClientById(clientId)
+    if (!clientId || !user?.access_token) return;
+    getClientById(user.access_token, clientId)
       .then(setClient)
       .finally(() => setLoading(false));
-  }, [clientId]);
+  }, [clientId, user?.access_token]);
 
   if (loading) return <PageLayout title="Client Profile">Loading…</PageLayout>;
   if (!client)

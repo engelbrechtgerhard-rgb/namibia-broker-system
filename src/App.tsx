@@ -1,7 +1,4 @@
-import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useAuth } from "react-oidc-context";
-import { setOidcTokens } from "./main";
 import ProtectedRoute from "./ProtectedRoute";
 import LogoutCleanup from "@/LogoutCleanup";
 import AppLayout from "@/layout/AppLayout";
@@ -14,13 +11,6 @@ import Claims from "@/pages/claims/Claims";
 import Reports from "@/pages/reports/Reports";
 
 export default function App() {
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (user?.access_token && user?.id_token) {
-      setOidcTokens(user.access_token, user.id_token);
-    }
-  }, [user?.access_token, user?.id_token]);
   return (
     <AppLayout>
       <Routes>

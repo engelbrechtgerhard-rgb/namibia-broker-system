@@ -4,7 +4,6 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider, type AuthProviderProps } from "react-oidc-context";
 import { Amplify } from "aws-amplify";
-import { fetchAuthSession } from "aws-amplify/auth";
 import amplifyOutputs from "../amplify_outputs.json";
 import App from "./App";
 import {
@@ -15,28 +14,7 @@ import {
   cognitoDomain,
 } from "@/config/authEnv";
 
-// Token store bridging react-oidc-context → Amplify
-let _accessToken: string | null = null;
-let _idToken: string | null = null;
-
-export function setOidcTokens(accessToken: string, idToken: string) {
-  _accessToken = accessToken;
-  _idToken = idToken;
-}
-
-Amplify.configure(amplifyOutputs, {
-  Auth: {
-    tokenProvider: {
-      getTokens: async () => {
-        if (!_accessToken || !_idToken) return null;
-        return {
-          accessToken: { toString: () => _accessToken! } as any,
-          idToken:     { toString: () => _idToken! }     as any,
-        };
-      },
-    },
-  },
-});
+Amplify.configure(amplifyOutputs);
 
 const oidcConfig: AuthProviderProps = {
   authority,
@@ -55,11 +33,7 @@ const oidcConfig: AuthProviderProps = {
     userinfo_endpoint:      `${cognitoDomain}/oauth2/userInfo`,
     end_session_endpoint:   `${cognitoDomain}/logout?client_id=${clientId}`,
   },
-  onSigninCallback: (user) => {
-    if (user?.access_token && user?.id_token) {
-      setOidcTokens(user.access_token, user.id_token);
-    }
-    // Remove OIDC params from URL after redirect
+  onSigninCallback: () => {
     window.history.replaceState({}, document.title, window.location.pathname);
   },
 };

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "react-oidc-context";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
 import { createClient } from "@/api/clients";
 
 export default function AddClient() {
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -21,7 +23,8 @@ export default function AddClient() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const newClient = await createClient(form);
+    if (!user?.access_token) return;
+    const newClient = await createClient(user.access_token, form);
     navigate(`/clients/${newClient.id}`);
   }
 
@@ -33,31 +36,26 @@ export default function AddClient() {
           value={form.firstName}
           onChange={(e) => updateField("firstName", e.target.value)}
         />
-
         <label>Last Name</label>
         <input
           value={form.lastName}
           onChange={(e) => updateField("lastName", e.target.value)}
         />
-
         <label>Email</label>
         <input
           value={form.email}
           onChange={(e) => updateField("email", e.target.value)}
         />
-
         <label>Phone</label>
         <input
           value={form.phone}
           onChange={(e) => updateField("phone", e.target.value)}
         />
-
         <label>ID Number</label>
         <input
           value={form.idNumber}
           onChange={(e) => updateField("idNumber", e.target.value)}
         />
-
         <Button type="submit" variant="primary" style={{ marginTop: 16 }}>
           Save Client
         </Button>
