@@ -1,7 +1,7 @@
 export const region = "eu-west-1";
 
-export const userPoolId = "eu-west-1_Db3ryUNLM";
-export const clientId = "4d4bujg2atrj6mrqq310620bq9";
+export const userPoolId = "eu-west-1_ERCFRs97T";
+export const clientId = "7oafsk3el1eue3uqcphh16k3sc";
 
 export const cognitoDomain =
   "https://namibia-broker-system.auth.eu-west-1.amazoncognito.com";
