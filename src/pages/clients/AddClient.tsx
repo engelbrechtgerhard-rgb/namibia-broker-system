@@ -23,8 +23,8 @@ export default function AddClient() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user?.access_token) return;
-    const newClient = await createClient(user.access_token, form);
+    if (!user?.id_token) return;
+    const newClient = await createClient(user.id_token, form);
     navigate(`/clients/${newClient.id}`);
   }
 

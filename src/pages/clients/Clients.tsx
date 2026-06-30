@@ -14,11 +14,11 @@ export default function Clients() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!user?.access_token) return;
-    listClients(user.access_token)
+    if (!user?.id_token) return;
+    listClients(user.id_token)
       .then(setClients)
       .finally(() => setLoading(false));
-  }, [user?.access_token]);
+  }, [user?.id_token]);
 
   const filtered = clients.filter((c) => {
     const fullName = `${c.firstName ?? ""} ${c.lastName ?? ""}`.toLowerCase();

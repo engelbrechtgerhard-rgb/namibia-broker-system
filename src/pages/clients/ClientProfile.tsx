@@ -11,11 +11,11 @@ export default function ClientProfile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!clientId || !user?.access_token) return;
-    getClientById(user.access_token, clientId)
+    if (!clientId || !user?.id_token) return;
+    getClientById(user.id_token, clientId)
       .then(setClient)
       .finally(() => setLoading(false));
-  }, [clientId, user?.access_token]);
+  }, [clientId, user?.id_token]);
 
   if (loading) return <PageLayout title="Client Profile">Loading…</PageLayout>;
   if (!client)
