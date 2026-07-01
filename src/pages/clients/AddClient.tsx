@@ -24,7 +24,10 @@ export default function AddClient() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!user?.id_token) return;
-    const newClient = await createClient(user.id_token, form);
+    const profile = user.profile as Record<string, unknown>;
+    const tenantId = typeof profile["custom:tenantId"] === "string" ? profile["custom:tenantId"] : "";
+    if (!tenantId) return;
+    const newClient = await createClient(user.id_token, tenantId, form);
     navigate(`/clients/${newClient.id}`);
   }
 

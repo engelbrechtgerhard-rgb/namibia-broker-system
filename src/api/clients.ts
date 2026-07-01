@@ -64,13 +64,14 @@ export async function getClientById(idToken: string, id: string): Promise<Client
 
 export async function createClient(
   idToken: string,
+  tenantId: string,
   input: Omit<Client, "id" | "tenantId" | "createdAt" | "updatedAt">
 ): Promise<Client> {
   const data = await gql(idToken, `
     mutation CreateClient($input: CreateClientInput!) {
       createClient(input: $input) { ${CLIENT_FIELDS} }
     }
-  `, { input });
+  `, { input: { ...input, tenantId } });
   return data.createClient;
 }
 
