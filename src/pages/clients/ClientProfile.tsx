@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import { getClientById } from "@/api/clients";
 import PageLayout from "@/layout/PageLayout";
-import styles from "Clients.module.css";
+import styles from "./Clients.module.css";
 
 export default function ClientProfile() {
   const { user } = useAuth();
