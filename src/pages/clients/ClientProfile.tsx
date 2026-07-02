@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
-import PageLayout from "@/layout/PageLayout";
 import { getClientById } from "@/api/clients";
+import PageLayout from "@/layout/PageLayout";
+import styles from "Clients.module.css";
 
 export default function ClientProfile() {
   const { user } = useAuth();
@@ -29,31 +30,41 @@ export default function ClientProfile() {
     <PageLayout title={`${client.firstName} ${client.lastName}`}>
       <Link to="/clients">← Back to Clients</Link>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 16,
-          marginTop: 24,
-          marginBottom: 24,
-        }}
-      >
-        <InfoCard label="Email" value={client.email ?? "—"} />
-        <InfoCard label="Phone" value={client.phone ?? "—"} />
-        <InfoCard label="ID Number" value={client.idNumber ?? "—"} />
-        <InfoCard
-          label="Created"
-          value={new Date(client.createdAt).toLocaleDateString()}
-        />
+      <div className={styles.profileCard}>
+        <h3 className={styles.sectionTitle}>Client Information</h3>
+
+        <div className={styles.profileGrid}>
+          <div className={styles.profileField}>
+            <span className={styles.label}>Email</span>
+            <span>{client.email || "—"}</span>
+          </div>
+
+          <div className={styles.profileField}>
+            <span className={styles.label}>Phone</span>
+            <span>{client.phone || "—"}</span>
+          </div>
+
+          <div className={styles.profileField}>
+            <span className={styles.label}>ID Number</span>
+            <span>{client.idNumber || "—"}</span>
+          </div>
+
+          <div className={styles.profileField}>
+            <span className={styles.label}>Created</span>
+            <span>{new Date(client.createdAt).toLocaleDateString()}</span>
+          </div>
+        </div>
       </div>
 
-      <Section title="Policies">
+      <div className={styles.section}>
+        <h3 className={styles.sectionTitle}>Policies</h3>
         <p>Policies integration coming soon…</p>
-      </Section>
+      </div>
 
-      <Section title="Claims">
+      <div className={styles.section}>
+        <h3 className={styles.sectionTitle}>Claims</h3>
         <p>Claims integration coming soon…</p>
-      </Section>
+      </div>
     </PageLayout>
   );
 }

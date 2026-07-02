@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
+import { createClient } from "@/api/clients";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
-import { createClient } from "@/api/clients";
+import styles from "./Clients.module.css";
 
 export default function AddClient() {
   const { user } = useAuth();
@@ -33,33 +34,57 @@ export default function AddClient() {
 
   return (
     <PageLayout title="Add Client">
-      <form onSubmit={handleSubmit} style={{ maxWidth: 500 }}>
-        <label>First Name</label>
-        <input
-          value={form.firstName}
-          onChange={(e) => updateField("firstName", e.target.value)}
-        />
-        <label>Last Name</label>
-        <input
-          value={form.lastName}
-          onChange={(e) => updateField("lastName", e.target.value)}
-        />
-        <label>Email</label>
-        <input
-          value={form.email}
-          onChange={(e) => updateField("email", e.target.value)}
-        />
-        <label>Phone</label>
-        <input
-          value={form.phone}
-          onChange={(e) => updateField("phone", e.target.value)}
-        />
-        <label>ID Number</label>
-        <input
-          value={form.idNumber}
-          onChange={(e) => updateField("idNumber", e.target.value)}
-        />
-        <Button type="submit" variant="primary" style={{ marginTop: 16 }}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.sectionCard}>
+          <h3 className={styles.sectionTitle}>Client Details</h3>
+
+          <div className={styles.grid}>
+            <div className={styles.field}>
+              <label>First Name</label>
+              <input
+                value={form.firstName}
+                onChange={(e) => updateField("firstName", e.target.value)}
+                required
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>Last Name</label>
+              <input
+                value={form.lastName}
+                onChange={(e) => updateField("lastName", e.target.value)}
+                required
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>Email</label>
+              <input
+                type="email"
+                value={form.email}
+                onChange={(e) => updateField("email", e.target.value)}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>Phone</label>
+              <input
+                value={form.phone}
+                onChange={(e) => updateField("phone", e.target.value)}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>ID Number</label>
+              <input
+                value={form.idNumber}
+                onChange={(e) => updateField("idNumber", e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+
+        <Button type="submit" variant="primary" className={styles.saveButton}>
           Save Client
         </Button>
       </form>
