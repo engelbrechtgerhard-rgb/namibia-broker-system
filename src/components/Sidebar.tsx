@@ -1,67 +1,71 @@
 import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Users,
+  FileText,
+  ShieldCheck,
+  BarChart3,
+} from "lucide-react";
 import styles from "./Sidebar.module.css";
 
 export default function Sidebar() {
   return (
-    <div className={styles.sidebar}>
-      <h3>Menu</h3>
+    <aside className={styles.sidebar}>
+      <div className={styles.header}>
+        <span className={styles.appName}>Broker System</span>
+      </div>
 
-      <ul className={styles.menu}>
-        <li>
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.active}` : styles.link
-            }
-          >
-            Dashboard
-          </NavLink>
-        </li>
+      <nav className={styles.nav}>
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          <LayoutDashboard className={styles.icon} />
+          <span>Dashboard</span>
+        </NavLink>
 
-        <li>
-          <NavLink
-            to="/clients"
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.active}` : styles.link
-            }
-          >
-            Clients
-          </NavLink>
-        </li>
+        <NavLink
+          to="/clients"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          <Users className={styles.icon} />
+          <span>Clients</span>
+        </NavLink>
 
-        <li>
-          <NavLink
-            to="/policies"
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.active}` : styles.link
-            }
-          >
-            Policies
-          </NavLink>
-        </li>
+        <NavLink
+          to="/policies"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          <ShieldCheck className={styles.icon} />
+          <span>Policies</span>
+        </NavLink>
 
-        <li>
-          <NavLink
-            to="/claims"
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.active}` : styles.link
-            }
-          >
-            Claims
-          </NavLink>
-        </li>
+        <NavLink
+          to="/claims"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          <FileText className={styles.icon} />
+          <span>Claims</span>
+        </NavLink>
 
-        <li>
-          <NavLink
-            to="/reports"
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.active}` : styles.link
-            }
-          >
-            Reports
-          </NavLink>
-        </li>
-      </ul>
-    </div>
+        <NavLink
+          to="/reports"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          <BarChart3 className={styles.icon} />
+          <span>Reports</span>
+        </NavLink>
+      </nav>
+    </aside>
   );
 }
