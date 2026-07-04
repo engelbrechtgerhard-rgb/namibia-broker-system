@@ -54,38 +54,54 @@ export default function EditClient() {
 
   return (
     <PageLayout title="Edit Client">
-      <form onSubmit={handleSubmit} style={{ maxWidth: 500 }}>
-        <label>First Name</label>
-        <input
-          value={form.firstName}
-          onChange={(e) => updateField("firstName", e.target.value)}
-        />
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.sectionCard}>
+          <h3 className={styles.sectionTitle}>Edit Client Details</h3>
 
-        <label>Last Name</label>
-        <input
-          value={form.lastName}
-          onChange={(e) => updateField("lastName", e.target.value)}
-        />
+          <div className={styles.grid}>
+            <div className={styles.field}>
+              <label>First Name</label>
+              <input
+                value={form.firstName}
+                onChange={(e) => updateField("firstName", e.target.value)}
+              />
+            </div>
 
-        <label>Email</label>
-        <input
-          value={form.email}
-          onChange={(e) => updateField("email", e.target.value)}
-        />
+            <div className={styles.field}>
+              <label>Last Name</label>
+              <input
+                value={form.lastName}
+                onChange={(e) => updateField("lastName", e.target.value)}
+              />
+            </div>
 
-        <label>Phone</label>
-        <input
-          value={form.phone}
-          onChange={(e) => updateField("phone", e.target.value)}
-        />
+            <div className={styles.field}>
+              <label>Email</label>
+              <input
+                value={form.email}
+                onChange={(e) => updateField("email", e.target.value)}
+              />
+            </div>
 
-        <label>ID Number</label>
-        <input
-          value={form.idNumber}
-          onChange={(e) => updateField("idNumber", e.target.value)}
-        />
+            <div className={styles.field}>
+              <label>Phone</label>
+              <input
+                value={form.phone}
+                onChange={(e) => updateField("phone", e.target.value)}
+              />
+            </div>
 
-        <Button type="submit" variant="primary" style={{ marginTop: 16 }}>
+            <div className={styles.field}>
+              <label>ID Number</label>
+              <input
+                value={form.idNumber}
+                onChange={(e) => updateField("idNumber", e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+
+        <Button type="submit" variant="primary" className={styles.saveButton}>
           Save Changes
         </Button>
       </form>

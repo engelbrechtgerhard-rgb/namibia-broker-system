@@ -1,0 +1,62 @@
+:root {
+  /* --- Brand Colors --- */
+  --color-primary: #1a73e8;
+  --color-primary-light: #e8f0fe;
+  --color-primary-dark: #1558b0;
+
+  --color-secondary: #5f6368;
+
+  /* --- Neutral Palette --- */
+  --color-bg: #f7f9fc;
+  --color-surface: #ffffff;
+  --color-border: #e2e2e2;
+  --color-border-light: #ededed;
+  --color-text: #333333;
+  --color-text-light: #555555;
+  --color-text-muted: #888888;
+
+  /* --- Spacing Scale (8px grid) --- */
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+
+  /* --- Typography --- */
+  --font-family: "Inter", sans-serif;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+
+  /* --- Radii --- */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* --- Shadows --- */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 2px 6px rgba(0,0,0,0.08);
+
+  /* --- Component Tokens --- */
+  --input-padding: 10px;
+  --input-border: 1px solid var(--color-border);
+  --input-bg: #fafafa;
+
+  --card-padding: 24px;
+  --card-bg: var(--color-surface);
+  --card-border: 1px solid var(--color-border);
+  --card-radius: var(--radius-lg);
+  --card-shadow: var(--shadow-sm);
+
+  --button-padding: 10px 16px;
+  --button-radius: var(--radius-md);
+}
