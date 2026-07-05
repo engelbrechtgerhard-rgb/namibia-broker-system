@@ -4,6 +4,7 @@ import { useAuth } from "react-oidc-context";
 import { createClient } from "@/api/clients";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
+import Card from "@/components/Card";
 import styles from "./Clients.module.css";
 
 export default function AddClient() {
@@ -25,9 +26,15 @@ export default function AddClient() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!user?.id_token) return;
+
     const profile = user.profile as Record<string, unknown>;
-    const tenantId = typeof profile["custom:tenantId"] === "string" ? profile["custom:tenantId"] : "";
+    const tenantId =
+      typeof profile["custom:tenantId"] === "string"
+        ? profile["custom:tenantId"]
+        : "";
+
     if (!tenantId) return;
+
     const newClient = await createClient(user.id_token, tenantId, form);
     navigate(`/clients/${newClient.id}`);
   }
@@ -35,9 +42,7 @@ export default function AddClient() {
   return (
     <PageLayout title="Add Client">
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.sectionCard}>
-          <h3 className={styles.sectionTitle}>Client Details</h3>
-
+        <Card title="Client Details">
           <div className={styles.grid}>
             <div className={styles.field}>
               <label>First Name</label>
@@ -82,7 +87,7 @@ export default function AddClient() {
               />
             </div>
           </div>
-        </div>
+        </Card>
 
         <Button type="submit" variant="primary" className={styles.saveButton}>
           Save Client

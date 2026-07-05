@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import { getClientById } from "@/api/clients";
 import PageLayout from "@/layout/PageLayout";
+import Card from "@/components/Card";
 import styles from "./Clients.module.css";
 
 export default function ClientProfile() {
@@ -19,6 +20,7 @@ export default function ClientProfile() {
   }, [clientId, user?.id_token]);
 
   if (loading) return <PageLayout title="Client Profile">Loading…</PageLayout>;
+
   if (!client)
     return (
       <PageLayout title="Client Profile">
@@ -30,9 +32,7 @@ export default function ClientProfile() {
     <PageLayout title={`${client.firstName} ${client.lastName}`}>
       <Link to="/clients">← Back to Clients</Link>
 
-      <div className={styles.profileCard}>
-        <h3 className={styles.sectionTitle}>Client Information</h3>
-
+      <Card title="Client Information">
         <div className={styles.profileGrid}>
           <div className={styles.profileField}>
             <span className={styles.label}>Email</span>
@@ -54,35 +54,15 @@ export default function ClientProfile() {
             <span>{new Date(client.createdAt).toLocaleDateString()}</span>
           </div>
         </div>
-      </div>
+      </Card>
 
-      <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>Policies</h3>
+      <Card title="Policies">
         <p>Policies integration coming soon…</p>
-      </div>
+      </Card>
 
-      <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>Claims</h3>
+      <Card title="Claims">
         <p>Claims integration coming soon…</p>
-      </div>
+      </Card>
     </PageLayout>
-  );
-}
-
-function InfoCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div style={{ background: "#fff", padding: 16, borderRadius: 8 }}>
-      <p style={{ margin: 0, fontSize: 12, color: "#888" }}>{label}</p>
-      <p style={{ margin: 0, fontWeight: 500 }}>{value}</p>
-    </div>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div style={{ background: "#fff", padding: 24, borderRadius: 8, marginBottom: 16 }}>
-      <h3 style={{ marginTop: 0 }}>{title}</h3>
-      {children}
-    </div>
   );
 }

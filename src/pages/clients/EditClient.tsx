@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
-import { getClient, updateClient } from "@/api/clients";
+import Card from "@/components/Card";
+import { getClientById, updateClient } from "@/api/clients";
+import { useAuth } from "react-oidc-context";
+import styles from "./Clients.module.css";
 
 export default function EditClient() {
   const { clientId } = useParams<{ clientId: string }>();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -17,11 +21,10 @@ export default function EditClient() {
     idNumber: "",
   });
 
-  // Load client data
   useEffect(() => {
-    if (!clientId) return;
+    if (!clientId || !user?.id_token) return;
 
-    getClient(clientId)
+    getClientById(user.id_token, clientId)
       .then((client) => {
         if (!client) return;
 
@@ -34,7 +37,7 @@ export default function EditClient() {
         });
       })
       .finally(() => setLoading(false));
-  }, [clientId]);
+  }, [clientId, user?.id_token]);
 
   function updateField(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -42,9 +45,9 @@ export default function EditClient() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!clientId) return;
+    if (!clientId || !user?.id_token) return;
 
-    await updateClient(clientId, form);
+    await updateClient(user.id_token, clientId, form);
     navigate(`/clients/${clientId}`);
   }
 
@@ -55,9 +58,7 @@ export default function EditClient() {
   return (
     <PageLayout title="Edit Client">
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.sectionCard}>
-          <h3 className={styles.sectionTitle}>Edit Client Details</h3>
-
+        <Card title="Edit Client Details">
           <div className={styles.grid}>
             <div className={styles.field}>
               <label>First Name</label>
@@ -99,7 +100,7 @@ export default function EditClient() {
               />
             </div>
           </div>
-        </div>
+        </Card>
 
         <Button type="submit" variant="primary" className={styles.saveButton}>
           Save Changes
