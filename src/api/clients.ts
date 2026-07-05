@@ -87,3 +87,19 @@ export async function updateClient(
   `, { input: { id, ...input } });
   return data.updateClient;
 }
+
+export async function deleteClient(idToken: string, id: string): Promise<boolean> {
+  const data = await gql(
+    idToken,
+    `
+      mutation DeleteClient($input: DeleteClientInput!) {
+        deleteClient(input: $input) {
+          id
+        }
+      }
+    `,
+    { input: { id } }
+  );
+
+  return !!data.deleteClient;
+}

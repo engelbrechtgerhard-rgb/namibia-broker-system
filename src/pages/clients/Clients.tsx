@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
-import { listClients } from "@/api/clients";
+import ConfirmModal from "@/components/ConfirmModal";
+import { listClients, deleteClient } from "@/api/clients";
 import styles from "./Clients.module.css";
 
 export default function Clients() {
@@ -12,6 +13,7 @@ export default function Clients() {
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user?.id_token) return;
@@ -24,6 +26,17 @@ export default function Clients() {
     const fullName = `${c.firstName ?? ""} ${c.lastName ?? ""}`.toLowerCase();
     return fullName.includes(search.toLowerCase());
   });
+
+  async function handleDelete(id: string) {
+    if (!user?.id_token) return;
+
+    await deleteClient(user.id_token, id);
+
+    // Remove from list
+    setClients((prev) => prev.filter((c) => c.id !== id));
+
+    setDeleteId(null);
+  }
 
   return (
     <PageLayout
@@ -52,7 +65,7 @@ export default function Clients() {
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -70,11 +83,29 @@ export default function Clients() {
                   <Link to={`/clients/${c.id}/edit`} className={styles.viewLink}>
                     Edit
                   </Link>
+                  {" · "}
+                  <span
+                    className={styles.viewLink}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setDeleteId(c.id)}
+                  >
+                    Delete
+                  </span>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+
+      {deleteId && (
+        <ConfirmModal
+          title="Delete Client"
+          message="Are you sure you want to delete this client? This action cannot be undone."
+          confirmLabel="Delete"
+          onConfirm={() => handleDelete(deleteId)}
+          onCancel={() => setDeleteId(null)}
+        />
       )}
     </PageLayout>
   );

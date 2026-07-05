@@ -45,15 +45,6 @@ export default function App() {
         />
 
         <Route
-          path="/clients/:clientId"
-          element={
-            <ProtectedRoute>
-              <ClientProfile />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
           path="/clients/add"
           element={
             <ProtectedRoute>
@@ -64,6 +55,15 @@ export default function App() {
 
         <Route
           path="/clients/:clientId"
+          element={
+            <ProtectedRoute>
+              <ClientProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/clients/:clientId/edit"
           element={
             <ProtectedRoute>
               <EditClient />
