@@ -66,6 +66,10 @@ export default function Clients() {
                   <Link to={`/clients/${c.id}`} className={styles.viewLink}>
                     View
                   </Link>
+                  {" · "}
+                  <Link to={`/clients/${c.id}/edit`} className={styles.viewLink}>
+                    Edit
+                  </Link>
                 </td>
               </tr>
             ))}

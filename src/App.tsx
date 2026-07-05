@@ -6,6 +6,7 @@ import Dashboard from "@/pages/Dashboard";
 import Clients from "@/pages/clients/Clients";
 import ClientProfile from "@/pages/clients/ClientProfile";
 import AddClient from "@/pages/clients/AddClient";
+import EditClient from "@/pages/clients/EditClient";
 import Policies from "@/pages/policies/Policies";
 import Claims from "@/pages/claims/Claims";
 import Reports from "@/pages/reports/Reports";
@@ -57,6 +58,15 @@ export default function App() {
           element={
             <ProtectedRoute>
               <AddClient />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/clients/:clientId"
+          element={
+            <ProtectedRoute>
+              <EditClient />
             </ProtectedRoute>
           }
         />
