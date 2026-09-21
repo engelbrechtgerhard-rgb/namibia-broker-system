@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "react-oidc-context";
 import {
   LayoutDashboard,
   Users,
@@ -9,7 +10,10 @@ import {
 import styles from "./Sidebar.module.css";
 
 export default function Sidebar() {
-  const groups = (user?.profile?.["cognito:groups"] as string[]) ?? [];
+  const { user } = useAuth();
+
+  const rawGroups = user?.profile?.["cognito:groups"];
+  const groups = Array.isArray(rawGroups) ? (rawGroups as string[]) : [];
   const isAdmin = groups.includes("Admin");
 
   return (
