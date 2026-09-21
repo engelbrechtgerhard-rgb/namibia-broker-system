@@ -66,6 +66,27 @@ const schema = a.schema({
     })
     .identifier(["id"])
     .authorization((allow) => [allow.authenticated()]),
+
+  AuditLog: a
+    .model({
+      id: a.id().required(),
+      tenantId: a.string().required(),
+      entityType: a.string().required(),     // "Client", "Policy", "Claim", etc.
+      entityId: a.string().required(),       // ID of the entity
+      action: a.string().required(),         // "CREATE", "UPDATE", "DELETE"
+      performedBy: a.string().required(),    // user email or sub
+      performedByName: a.string(),           // optional: user full name
+      timestamp: a.datetime().required(),    // ISO timestamp
+      details: a.string(),                   // optional JSON string
+    })
+    .identifier(["id"])
+    .authorization((allow) => [
+      // Admins can see all logs
+      allow.groups(["Admin"]),
+
+      // Brokers can only see logs for their own tenant
+      allow.ownerDefinedIn("tenantId").identityClaim("custom:tenantId"),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

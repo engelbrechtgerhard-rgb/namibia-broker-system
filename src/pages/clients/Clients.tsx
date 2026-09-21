@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
+import { listClients, deleteClient } from "@/api/clients";
+import { logAudit } from "@/api/audit";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
 import ConfirmModal from "@/components/ConfirmModal";
-import { listClients, deleteClient } from "@/api/clients";
 import styles from "./Clients.module.css";
 
 export default function Clients() {
@@ -14,6 +15,8 @@ export default function Clients() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const groups = (user?.profile?.["cognito:groups"] as string[]) ?? [];
+  const isAdmin = groups.includes("Admin");
 
   useEffect(() => {
     if (!user?.id_token) return;
@@ -30,11 +33,29 @@ export default function Clients() {
   async function handleDelete(id: string) {
     if (!user?.id_token) return;
 
+    const profile = user.profile as Record<string, unknown>;
+    const tenantId =
+      typeof profile["custom:tenantId"] === "string"
+        ? profile["custom:tenantId"]
+        : "";
+
+    // 1. Delete the client
     await deleteClient(user.id_token, id);
 
-    // Remove from list
-    setClients((prev) => prev.filter((c) => c.id !== id));
+    // 2. Log audit entry
+    await logAudit(user.id_token, {
+      tenantId,
+      entityType: "Client",
+      entityId: id,
+      action: "DELETE",
+      performedBy: user.profile.email ?? user.profile.sub ?? "unknown",
+      performedByName: `${user.profile.given_name ?? ""} ${user.profile.family_name ?? ""}`.trim(),
+      timestamp: new Date().toISOString(),
+      details: "Client deleted from Clients list",
+    });
 
+    // 3. Update UI
+    setClients((prev) => prev.filter((c) => c.id !== id));
     setDeleteId(null);
   }
 
@@ -83,14 +104,18 @@ export default function Clients() {
                   <Link to={`/clients/${c.id}/edit`} className={styles.viewLink}>
                     Edit
                   </Link>
-                  {" · "}
-                  <span
-                    className={styles.viewLink}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setDeleteId(c.id)}
-                  >
-                    Delete
-                  </span>
+                  {isAdmin && (
+                    <>
+                      {" · "}
+                      <span
+                        className={styles.viewLink}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setDeleteId(c.id)}
+                      >
+                        Delete
+                      </span>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

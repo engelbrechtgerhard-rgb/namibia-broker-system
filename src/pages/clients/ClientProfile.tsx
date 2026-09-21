@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import { getClientById, deleteClient } from "@/api/clients";
+import { logAudit } from "@/api/audit";
 import PageLayout from "@/layout/PageLayout";
 import Card from "@/components/Card";
 import Button from "@/components/Button";
@@ -15,6 +16,8 @@ export default function ClientProfile() {
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showDelete, setShowDelete] = useState(false);
+  const groups = (user?.profile?.["cognito:groups"] as string[]) ?? [];
+  const isAdmin = groups.includes("Admin");
 
   useEffect(() => {
     if (!clientId || !user?.id_token) return;
@@ -35,8 +38,28 @@ export default function ClientProfile() {
   async function handleDelete() {
     if (!user?.id_token || !clientId) return;
 
+    const profile = user.profile as Record<string, unknown>;
+    const tenantId =
+      typeof profile["custom:tenantId"] === "string"
+        ? profile["custom:tenantId"]
+        : "";
+
+    // 1. Delete the client
     await deleteClient(user.id_token, clientId);
 
+    // 2. Log audit entry
+    await logAudit(user.id_token, {
+      tenantId,
+      entityType: "Client",
+      entityId: clientId,
+      action: "DELETE",
+      performedBy: user.profile.email ?? user.profile.sub ?? "unknown",
+      performedByName: `${user.profile.given_name ?? ""} ${user.profile.family_name ?? ""}`.trim(),
+      timestamp: new Date().toISOString(),
+      details: "Client deleted from ClientProfile page",
+    });
+
+    // 3. Redirect
     navigate("/clients");
   }
 
@@ -49,13 +72,15 @@ export default function ClientProfile() {
           Edit Client
         </Button>
 
-        <Button
-          variant="secondary"
-          onClick={() => setShowDelete(true)}
-          style={{ marginLeft: "var(--space-sm)" }}
-        >
-          Delete Client
-        </Button>
+        {isAdmin && (
+          <Button
+            variant="secondary"
+            onClick={() => setShowDelete(true)}
+            style={{ marginLeft: "var(--space-sm)" }}
+          >
+            Delete Client
+          </Button>
+        )}
       </div>
 
       <Card title="Client Information">
