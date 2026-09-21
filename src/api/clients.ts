@@ -39,7 +39,7 @@ export type Client = {
 };
 
 const CLIENT_FIELDS = `
-  id tenantId type firstName lastName
+  id tenantId firstName lastName type
   email phone idNumber taxNumber vatNumber address
   createdAt updatedAt
 `;

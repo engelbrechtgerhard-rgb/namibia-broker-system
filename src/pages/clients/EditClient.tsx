@@ -6,20 +6,31 @@ import Card from "@/components/Card";
 import { getClientById, updateClient } from "@/api/clients";
 import { useAuth } from "react-oidc-context";
 import styles from "./Clients.module.css";
+import { listClientTypes } from "@/api/clientTypes";
 
 export default function EditClient() {
   const { clientId } = useParams<{ clientId: string }>();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [clientTypes, setClientTypes] = useState<any[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
+    type: "",
     email: "",
     phone: "",
     idNumber: "",
   });
+
+  useEffect(() => {
+    if (!user?.id_token) return;
+
+    const tenantId = user.profile["custom:tenantId"] as string;
+
+    listClientTypes(user.id_token, tenantId).then(setClientTypes);
+  }, [user?.id_token]);
 
   useEffect(() => {
     if (!clientId || !user?.id_token) return;
@@ -31,6 +42,7 @@ export default function EditClient() {
         setForm({
           firstName: client.firstName ?? "",
           lastName: client.lastName ?? "",
+          type: client.type ?? "",
           email: client.email ?? "",
           phone: client.phone ?? "",
           idNumber: client.idNumber ?? "",
@@ -74,6 +86,22 @@ export default function EditClient() {
                 value={form.lastName}
                 onChange={(e) => updateField("lastName", e.target.value)}
               />
+            </div>
+
+            <div className={styles.field}>
+              <label>Type</label>
+              <select
+                value={form.type ?? ""}
+                onChange={(e) => updateField("type", e.target.value)}
+                required
+              >
+                <option value="">Select type…</option>
+                {clientTypes.map((t) => (
+                  <option key={t.id} value={t.name}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className={styles.field}>

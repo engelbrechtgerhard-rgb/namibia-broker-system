@@ -6,6 +6,7 @@ import { logAudit } from "@/api/audit";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
 import ConfirmModal from "@/components/ConfirmModal";
+import ActionsCell from "@/components/ActionsCell";
 import styles from "./Clients.module.css";
 
 export default function Clients() {
@@ -97,25 +98,13 @@ export default function Clients() {
                 <td>{c.email ?? "—"}</td>
                 <td>{c.phone ?? "—"}</td>
                 <td>
-                  <Link to={`/clients/${c.id}`} className={styles.viewLink}>
-                    View
-                  </Link>
-                  {" · "}
-                  <Link to={`/clients/${c.id}/edit`} className={styles.viewLink}>
-                    Edit
-                  </Link>
-                  {isAdmin && (
-                    <>
-                      {" · "}
-                      <span
-                        className={styles.viewLink}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setDeleteId(c.id)}
-                      >
-                        Delete
-                      </span>
-                    </>
-                  )}
+                  <ActionsCell
+                    id={c.id}
+                    isAdmin={isAdmin}
+                    onView={() => navigate(`/clients/${c.id}`)}
+                    onEdit={() => navigate(`/clients/${c.id}/edit`)}
+                    onDelete={() => setDeleteId(c.id)}
+                  />
                 </td>
               </tr>
             ))}

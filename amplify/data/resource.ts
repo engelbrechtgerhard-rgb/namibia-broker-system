@@ -87,6 +87,21 @@ const schema = a.schema({
       // Brokers can only see logs for their own tenant
       allow.ownerDefinedIn("tenantId").identityClaim("custom:tenantId"),
     ]),
+
+  ClientType: a
+    .model({
+      id: a.id().required(),
+      tenantId: a.string().required(),
+      name: a.string().required(),
+      description: a.string(),
+      createdAt: a.datetime(),
+      updatedAt: a.datetime(),
+    })
+    .identifier(["id"])
+    .authorization((allow) => [
+      allow.ownerDefinedIn("tenantId").identityClaim("custom:tenantId"),
+      allow.groups(["Admin"]),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

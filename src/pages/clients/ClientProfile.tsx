@@ -86,6 +86,11 @@ export default function ClientProfile() {
       <Card title="Client Information">
         <div className={styles.profileGrid}>
           <div className={styles.profileField}>
+            <span className={styles.label}>Type</span>
+            <span>{client.type || "—"}</span>
+          </div>
+
+          <div className={styles.profileField}>
             <span className={styles.label}>Email</span>
             <span>{client.email || "—"}</span>
           </div>

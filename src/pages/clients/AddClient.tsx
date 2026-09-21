@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import { createClient } from "@/api/clients";
+import { listClientTypes } from "@/api/clientTypes";
 import PageLayout from "@/layout/PageLayout";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
@@ -10,14 +11,24 @@ import styles from "./Clients.module.css";
 export default function AddClient() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [clientTypes, setClientTypes] = useState<any[]>([]);
 
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
+    type: "",
     email: "",
     phone: "",
     idNumber: "",
   });
+
+  useEffect(() => {
+    if (!user?.id_token) return;
+
+    const tenantId = user.profile["custom:tenantId"] as string;
+
+    listClientTypes(user.id_token, tenantId).then(setClientTypes);
+  }, [user?.id_token]);
 
   function updateField(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -60,6 +71,22 @@ export default function AddClient() {
                 onChange={(e) => updateField("lastName", e.target.value)}
                 required
               />
+            </div>
+
+            <div className={styles.field}>
+              <label>Type</label>
+              <select
+                value={form.type ?? ""}
+                onChange={(e) => updateField("type", e.target.value)}
+                required
+              >
+                <option value="">Select type…</option>
+                {clientTypes.map((t) => (
+                  <option key={t.id} value={t.name}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className={styles.field}>

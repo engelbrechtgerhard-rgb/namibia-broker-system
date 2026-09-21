@@ -10,6 +10,8 @@ import EditClient from "@/pages/clients/EditClient";
 import Policies from "@/pages/policies/Policies";
 import Claims from "@/pages/claims/Claims";
 import Reports from "@/pages/reports/Reports";
+import AdminHome from "@/pages/admin/AdminHome";
+import ClientTypes from "@/pages/admin/ClientTypes";
 
 export default function App() {
   return (
@@ -95,6 +97,24 @@ export default function App() {
             <ProtectedRoute>
               <Reports />
             </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminHome />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/client-types"
+          element={
+            <ProtectedRoute>
+              <ClientTypes />
+            </ProtectedRoute> 
           }
         />
       </Routes>

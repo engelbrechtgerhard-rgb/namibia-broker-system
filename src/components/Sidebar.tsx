@@ -9,6 +9,9 @@ import {
 import styles from "./Sidebar.module.css";
 
 export default function Sidebar() {
+  const groups = (user?.profile?.["cognito:groups"] as string[]) ?? [];
+  const isAdmin = groups.includes("Admin");
+
   return (
     <aside className={styles.sidebar}>
       <div className={styles.header}>
@@ -65,6 +68,12 @@ export default function Sidebar() {
           <BarChart3 className={styles.icon} />
           <span>Reports</span>
         </NavLink>
+
+        {isAdmin && (
+          <NavLink to="/admin" className={styles.link}>
+            Admin
+          </NavLink>
+        )}
       </nav>
     </aside>
   );

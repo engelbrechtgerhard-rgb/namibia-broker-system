@@ -1,0 +1,16 @@
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.link {
+  color: var(--color-primary);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: var(--font-size-sm);
+}
+
+.link:hover {
+  opacity: 0.8;
+}
