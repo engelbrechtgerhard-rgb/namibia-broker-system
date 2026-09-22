@@ -110,7 +110,7 @@ const schema = a.schema({
       id: a.id().required(),
       tenantId: a.string().required(),
       name: a.string().required(),
-      category: a.enum(["INDIVIDUAL", "COMPANY"]).required(),
+      category: a.enum(["INDIVIDUAL", "COMPANY"]),
       description: a.string(),
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
