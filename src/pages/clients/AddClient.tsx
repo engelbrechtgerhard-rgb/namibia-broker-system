@@ -12,20 +12,32 @@ export default function AddClient() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [clientTypes, setClientTypes] = useState<any[]>([]);
-
   const [form, setForm] = useState({
+    type: "",
     firstName: "",
     lastName: "",
-    type: "",
+    idNumber: "",
+    title: "",
     email: "",
     phone: "",
-    idNumber: "",
+    companyName: "",
+    taxNumber: "",
+    vatNumber: "",
+    address: "",
+    contactFirstName: "",
+    contactLastName: "",
+    contactIdNumber: "",
+    contactTitle: "",
+    contactEmail: "",
+    contactPhone: "",
   });
+  const selectedType = clientTypes.find(t => t.name === form.type);
+  const category = selectedType?.category; // "INDIVIDUAL" or "COMPANY"
 
   useEffect(() => {
     if (!user?.id_token) return;
 
-    const tenantId = user.profile["custom:tenantId"] as string;
+    const tenantId = user.profile?.["custom:tenantId"] as string;
 
     listClientTypes(user.id_token, tenantId).then(setClientTypes);
   }, [user?.id_token]);
@@ -56,24 +68,6 @@ export default function AddClient() {
         <Card title="Client Details">
           <div className={styles.grid}>
             <div className={styles.field}>
-              <label>First Name</label>
-              <input
-                value={form.firstName}
-                onChange={(e) => updateField("firstName", e.target.value)}
-                required
-              />
-            </div>
-
-            <div className={styles.field}>
-              <label>Last Name</label>
-              <input
-                value={form.lastName}
-                onChange={(e) => updateField("lastName", e.target.value)}
-                required
-              />
-            </div>
-
-            <div className={styles.field}>
               <label>Type</label>
               <select
                 value={form.type ?? ""}
@@ -89,30 +83,147 @@ export default function AddClient() {
               </select>
             </div>
 
+            {category === "INDIVIDUAL" && (
+              <>
+                <div className={styles.field}>
+                  <label>First Name</label>
+                  <input
+                    value={form.firstName}
+                    onChange={(e) => updateField("firstName", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Last Name</label>
+                  <input
+                    value={form.lastName}
+                    onChange={(e) => updateField("lastName", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>ID Number</label>
+                  <input
+                    value={form.idNumber}
+                    onChange={(e) => updateField("idNumber", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Title</label>
+                  <input
+                    value={form.title}
+                    onChange={(e) => updateField("title", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Email</label>
+                  <input
+                    value={form.email}
+                    onChange={(e) => updateField("email", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Phone</label>
+                  <input
+                    value={form.phone}
+                    onChange={(e) => updateField("phone", e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
+            {category === "COMPANY" && (
+              <>
+                <div className={styles.field}>
+                  <label>Company Name</label>
+                  <input
+                    value={form.companyName}
+                    onChange={(e) => updateField("companyName", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Tax Number</label>
+                  <input
+                    value={form.taxNumber}
+                    onChange={(e) => updateField("taxNumber", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>VAT Number</label>
+                  <input
+                    value={form.vatNumber}
+                    onChange={(e) => updateField("vatNumber", e.target.value)}
+                  />
+                </div>
+
+                <h3>Contact Person</h3>
+
+                <div className={styles.field}>
+                  <label>First Name</label>
+                  <input
+                    value={form.contactFirstName}
+                    onChange={(e) => updateField("contactFirstName", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Last Name</label>
+                  <input
+                    value={form.contactLastName}
+                    onChange={(e) => updateField("contactLastName", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>ID Number</label>
+                  <input
+                    value={form.contactIdNumber}
+                    onChange={(e) => updateField("contactIdNumber", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Title</label>
+                  <input
+                    value={form.contactTitle}
+                    onChange={(e) => updateField("contactTitle", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Email</label>
+                  <input
+                    value={form.contactEmail}
+                    onChange={(e) => updateField("contactEmail", e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Phone</label>
+                  <input
+                    value={form.contactPhone}
+                    onChange={(e) => updateField("contactPhone", e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
             <div className={styles.field}>
-              <label>Email</label>
+              <label>Address</label>
               <input
-                type="email"
-                value={form.email}
-                onChange={(e) => updateField("email", e.target.value)}
+                value={form.address}
+                onChange={(e) => updateField("address", e.target.value)}
               />
             </div>
 
-            <div className={styles.field}>
-              <label>Phone</label>
-              <input
-                value={form.phone}
-                onChange={(e) => updateField("phone", e.target.value)}
-              />
-            </div>
-
-            <div className={styles.field}>
-              <label>ID Number</label>
-              <input
-                value={form.idNumber}
-                onChange={(e) => updateField("idNumber", e.target.value)}
-              />
-            </div>
           </div>
         </Card>
 

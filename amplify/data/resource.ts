@@ -5,15 +5,32 @@ const schema = a.schema({
     .model({
       id: a.id().required(),
       tenantId: a.string().required(),
-      type: a.string(),
+
+      // Individual client fields
+      title: a.string(),
       firstName: a.string().required(),
       lastName: a.string().required(),
+      idNumber: a.string(),
       email: a.string(),
       phone: a.string(),
-      idNumber: a.string(),
+
+      // Company client fields
+      companyName: a.string(),
       taxNumber: a.string(),
       vatNumber: a.string(),
+
+      // Contact person fields for company clients
+      contactFirstName: a.string(),
+      contactLastName: a.string(),
+      contactIdNumber: a.string(),
+      contactTitle: a.string(),
+      contactEmail: a.string(),
+      contactPhone: a.string(),
+
+      // Shared Address field
       address: a.string(),
+
+      type: a.string(), // name of CleintType
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
     })
@@ -93,6 +110,7 @@ const schema = a.schema({
       id: a.id().required(),
       tenantId: a.string().required(),
       name: a.string().required(),
+      category: a.enum(["INDIVIDUAL", "COMPANY"]).required(),
       description: a.string(),
       createdAt: a.datetime(),
       updatedAt: a.datetime(),

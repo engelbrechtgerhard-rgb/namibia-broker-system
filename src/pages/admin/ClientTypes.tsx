@@ -10,8 +10,9 @@ export default function ClientTypes() {
   const [types, setTypes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [newType, setNewType] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newCategory, setNewCategory] = useState("INDIVIDUAL");
   const [deleteId, setDeleteId] = useState<string | null>(null);
-
   const tenantId = user?.profile?.["custom:tenantId"] as string;
 
   useEffect(() => {
@@ -24,19 +25,23 @@ export default function ClientTypes() {
   async function handleCreate() {
     if (!newType.trim()) return;
 
-    await createClientType(user!.id_token, {
+    await createClientType(user?.id_token, {
       tenantId,
       name: newType.trim(),
+      category: newCategory,
+      description: newDescription.trim(),
     });
 
     setNewType("");
-    const updated = await listClientTypes(user!.id_token, tenantId);
+    setNewDescription("");
+
+    const updated = await listClientTypes(user?.id_token, tenantId);
     setTypes(updated);
   }
 
   async function handleDelete(id: string) {
-    await deleteClientType(user!.id_token, id);
-    const updated = await listClientTypes(user!.id_token, tenantId);
+    await deleteClientType(user?.id_token, id);
+    const updated = await listClientTypes(user?.id_token, tenantId);
     setTypes(updated);
     setDeleteId(null);
   }
@@ -51,6 +56,23 @@ export default function ClientTypes() {
           value={newType}
           onChange={(e) => setNewType(e.target.value)}
         />
+
+        <select
+          value={newCategory}
+          onChange={(e) => setNewCategory(e.target.value)}
+          style={{ marginLeft: "8px" }}
+        >
+          <option value="INDIVIDUAL">Individual</option>
+          <option value="COMPANY">Company</option>
+        </select>
+
+        <input
+          placeholder="Description (optional)…"
+          value={newDescription}
+          onChange={(e) => setNewDescription(e.target.value)}
+          style={{ marginLeft: "8px", width: "250px" }}
+        />
+
         <Button variant="primary" onClick={handleCreate}>
           Add
         </Button>
@@ -62,7 +84,8 @@ export default function ClientTypes() {
         <ul>
           {types.map((t) => (
             <li key={t.id}>
-              {t.name}
+              <strong>{t.name}</strong> ({t.category})
+              {t.description && <div style={{ fontSize: "0.85em", opacity: 0.7 }}>{t.description}</div>}
               {" · "}
               <span style={{ cursor: "pointer", color: "red" }} onClick={() => setDeleteId(t.id)}>
                 Delete
