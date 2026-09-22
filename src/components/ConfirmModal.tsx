@@ -3,7 +3,7 @@ import styles from "./ConfirmModal.module.css";
 
 type ConfirmModalProps = {
   title: string;
-  message: string;
+  message: string | ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   onConfirm: () => void;
@@ -22,7 +22,9 @@ export default function ConfirmModal({
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <h3 className={styles.title}>{title}</h3>
-        <p className={styles.message}>{message}</p>
+
+        {/* FIX: allow JSX */}
+        <div className={styles.message}>{message}</div>
 
         <div className={styles.actions}>
           <button className={styles.cancel} onClick={onCancel}>

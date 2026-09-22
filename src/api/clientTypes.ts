@@ -53,6 +53,19 @@ export async function createClientType(idToken: string, input: any) {
   return data.createClientType;
 }
 
+export async function updateClientType(idToken: string, id: string, input: any) {
+  const res = await fetch(`/clientTypes/${id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: idToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(input),
+  });
+
+  return res.json();
+}
+
 export async function deleteClientType(idToken: string, id: string) {
   const data = await gql(
     idToken,
