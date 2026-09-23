@@ -54,16 +54,23 @@ export async function createClientType(idToken: string, input: any) {
 }
 
 export async function updateClientType(idToken: string, id: string, input: any) {
-  const res = await fetch(`/clientTypes/${id}`, {
-    method: "PUT",
-    headers: {
-      Authorization: idToken,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(input),
-  });
+  const data = await gql(
+    idToken,
+    `
+      mutation UpdateClientType($input: UpdateClientTypeInput!) {
+        updateClientType(input: $input) {
+          id
+          name
+          category
+          description
+          tenantId
+        }
+      }
+    `,
+    { input: { id, ...input } }
+  );
 
-  return res.json();
+  return data.updateClientType;
 }
 
 export async function deleteClientType(idToken: string, id: string) {
