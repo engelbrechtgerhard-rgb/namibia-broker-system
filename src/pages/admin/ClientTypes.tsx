@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import AdminLayout from "@/layout/AdminLayout";
 import Button from "@/components/Button";
-import styles from "./Clients.module.css";
 import ConfirmModal from "@/components/ConfirmModal";
+import styles from "../clients/Clients.module.css";
 import { listClientTypes, createClientType, updateClientType, deleteClientType } from "@/api/clientTypes";
 
 export default function ClientTypes() {
