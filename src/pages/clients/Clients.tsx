@@ -8,6 +8,7 @@ import Button from "@/components/Button";
 import ConfirmModal from "@/components/ConfirmModal";
 import ActionsCell from "@/components/ActionsCell";
 import styles from "./Clients.module.css";
+import TypeBadge from "@/components/TypeBadge";
 
 export default function Clients() {
   const { user } = useAuth();
@@ -16,6 +17,7 @@ export default function Clients() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
   const groups = (user?.profile?.["cognito:groups"] as string[]) ?? [];
   const isAdmin = groups.includes("Admin");
 
@@ -26,24 +28,27 @@ export default function Clients() {
       .finally(() => setLoading(false));
   }, [user?.id_token]);
 
+  // Dynamic name resolution
+  function getDisplayName(c: any) {
+    if (c.type === "COMPANY") {
+      return c.companyName || "—";
+    }
+    return `${c.firstName ?? ""} ${c.lastName ?? ""}`.trim() || "—";
+  }
+
+  // Improved search: supports companyName + individual names
   const filtered = clients.filter((c) => {
-    const fullName = `${c.firstName ?? ""} ${c.lastName ?? ""}`.toLowerCase();
-    return fullName.includes(search.toLowerCase());
+    const name = getDisplayName(c).toLowerCase();
+    return name.includes(search.toLowerCase());
   });
 
   async function handleDelete(id: string) {
     if (!user?.id_token) return;
 
-    const profile = user.profile as Record<string, unknown>;
-    const tenantId =
-      typeof profile["custom:tenantId"] === "string"
-        ? profile["custom:tenantId"]
-        : "";
+    const tenantId = user.profile?.["custom:tenantId"] as string;
 
-    // 1. Delete the client
     await deleteClient(user.id_token, id);
 
-    // 2. Log audit entry
     await logAudit(user.id_token, {
       tenantId,
       entityType: "Client",
@@ -55,7 +60,6 @@ export default function Clients() {
       details: "Client deleted from Clients list",
     });
 
-    // 3. Update UI
     setClients((prev) => prev.filter((c) => c.id !== id));
     setDeleteId(null);
   }
@@ -85,6 +89,7 @@ export default function Clients() {
           <thead>
             <tr>
               <th>Name</th>
+              <th>Type</th>
               <th>Email</th>
               <th>Phone</th>
               <th>Actions</th>
@@ -94,7 +99,10 @@ export default function Clients() {
           <tbody>
             {filtered.map((c) => (
               <tr key={c.id}>
-                <td>{c.firstName} {c.lastName}</td>
+                <td>{getDisplayName(c)}</td>
+                <td>
+                  <TypeBadge type={c.type} />
+                </td>
                 <td>{c.email ?? "—"}</td>
                 <td>{c.phone ?? "—"}</td>
                 <td>

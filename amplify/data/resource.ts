@@ -30,7 +30,7 @@ const schema = a.schema({
       // Shared Address field
       address: a.string(),
 
-      type: a.string(), // name of CleintType
+      type: a.string(), // name of ClientType
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
     })

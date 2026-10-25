@@ -1,0 +1,22 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+}
+
+.icon {
+  font-size: 0.85rem;
+}
+
+.individual {
+  background-color: #007bff; /* blue */
+}
+
+.company {
+  background-color: #28a745; /* green */
+}
