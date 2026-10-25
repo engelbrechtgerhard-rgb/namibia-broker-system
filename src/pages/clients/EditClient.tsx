@@ -39,7 +39,9 @@ export default function EditClient() {
   });
 
   const selectedType = clientTypes.find(t => t.name === form.type);
-  const category = selectedType?.category; // "INDIVIDUAL" or "COMPANY"
+  const category =
+    selectedType?.category ??
+    ((form.type || "").toLowerCase() === "company" ? "COMPANY" : "INDIVIDUAL");
 
   useEffect(() => {
     if (!user?.id_token) return;

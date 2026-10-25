@@ -51,7 +51,9 @@ export default function ClientProfile() {
 
   // Determine category (INDIVIDUAL or COMPANY)
   const selectedType = clientTypes.find(t => t.name === client.type);
-  const category = selectedType?.category;
+  const category =
+    selectedType?.category ??
+    ((client.type || "").toLowerCase() === "company" ? "COMPANY" : "INDIVIDUAL");
 
   async function handleDelete() {
     if (!user?.id_token || !clientId) return;

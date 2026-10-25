@@ -1,7 +1,9 @@
 import styles from "./TypeBadge.module.css";
 
 export default function TypeBadge({ type }: { type: string }) {
-  if (type === "COMPANY") {
+  const normalized = (type || "").toLowerCase();
+
+  if (normalized  === "company") {
     return (
       <span className={`${styles.badge} ${styles.company}`}>
         <span className={styles.icon}>🏢</span>
