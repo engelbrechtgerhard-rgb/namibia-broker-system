@@ -6,6 +6,9 @@ import {
   FileText,
   ShieldCheck,
   BarChart3,
+  GitCompareArrows,
+  GitCompareArrowsIcon,
+  Settings,
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 
@@ -75,7 +78,8 @@ export default function Sidebar() {
 
         {isAdmin && (
           <NavLink to="/admin" className={styles.link}>
-            Admin
+            <Settings className={styles.icon} />
+            <span>Admin</span>
           </NavLink>
         )}
       </nav>
